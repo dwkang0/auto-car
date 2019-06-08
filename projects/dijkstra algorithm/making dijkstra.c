@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <limits.h> // INT_MAX에 이용
 
 #define MAX_V 100
 #define MAX_CAR 100
+#define INF ((int)((((unsigned int)0)-((unsigned int)1))/2)-1)
+
 /*
 int minDistance(int dist[V], bool sptSet[V])
 {
@@ -31,23 +34,25 @@ void printSolution(int dist[], int n)
 }
 */
 
-int pile_output(void *, void *);
-void main_dijkstra(int, int, void *, void *);
-void dijkstra(int [V][V], int);
+int * file_output(void *, void *);
+int dijkstra_first(int, int, void *, void *);
+//void main_dijkstra(int, int, int, void *, void *);
+//void dijkstra(int [V][V], int);
 int main()
 {
     void * data = malloc(MAX_V^2);
-    void * data_c = malloc(MAX_CAR*2)
-    int * VC=pile_output(data, data_c);//int road[V][V] = (int (*)[V])data; //int road[V][V]; 연결 되지 않은 길 : -1, 나머지 연결된 길 : 두 점 사이의 거리 // 다익스트라를 이용할 그래프
-    int V=VC[0]; int C=VC[1];
+    void * data_c = malloc(MAX_CAR*2);
+    int * VC=file_output(data, data_c);//int (* road)[V] = (int (*)[V])data; //int road[V][V]; 연결 되지 않은 길 : -1, 나머지 연결된 길 : 두 점 사이의 거리 // 다익스트라를 이용할 그래프
+    int V=VC[0]; int C=VC[1]; int k=VC[2];
     free(VC);
     // main_dijkstra(정점 수, 최단 거리를 구하고자 하는 그래프(포인터));
-    main_dijkstra(V, C, data, data_c);
-    
+    //main_dijkstra(V, C, k, data, data_c);
+    int road=dijkstra_first(V, C, data, data_c);
+
     return 0;
 }
 
-int * pile_output(void * data, void *data_c){
+int * file_output(void * data, void *data_c){
 	FILE *fp;
 	fp=fopen("road.txt", "rt");
 	if (fp==NULL) {}
@@ -59,16 +64,21 @@ int * pile_output(void * data, void *data_c){
     fscanf(fp, "%d", V);
     int C; //차 수
     fscanf(fp, "%d", C);
+    int k; //k번째 값
+    fscanf(fp, "%d", k);
     int (* data2)[V] = (int (*)[V])data;
     //ptr[10] => *(ptr+10)
 	for (int i=0;i<V;i++){
         for(int j=0;j<V;j++){
             fscanf(fp, "%d", data2[i][j]);//i점에서 j점까지의 거리
+            if(data2[i][j]==-1){
+                data2[i][j]=INF;
+            }
             if (feof(fp))
                 break;
         }
 	}
-	int (* data_c2)[v]=(int (*)[v])data_c;
+	int (* data_c2)[2]=(int (*)[2])data_c;
 	for (int i=0;i<C;i++){
         for(int j=0;j<2;j++){
             fscanf(fp, "%d", data_c2[i][j]);//차 : i점에서 j점으로 이동
@@ -78,13 +88,27 @@ int * pile_output(void * data, void *data_c){
 	}
 	fclose(fp);
 	//파일 정보 참조
-	int * returnal = (int *)malloc(sizeof(int)*2);
-	returnal[0]=V; returnal[1]=C;
+	int * returnal = (int *)malloc(sizeof(int)*3);
+	returnal[0]=V; returnal[1]=C; returnal[2]=k;
 	return returnal;
 }
-void main_dijkstra(int V, int C, void * data, void * data_c){
+int dijkstra_first(int V, int C, void * data, void * data_c){
+    int (* car_road)[2]=(int (*)[2])data_c;
+    int (* road)[V]=(int (*)[V])data;
+    int roadtotal[V];
+    memset(roadtotal, INF, sizeof(int));
+    roadtotal[car_road[0][1]]=0;
+    for(int i=0; i<V;i++){
 
+    }
+    return 0;
 }
+/*
+void main_dijkstra(int V, int C, int k, void * data, void * data_c){
+    int shortest[C];
+}
+*/
+/*
 void dijkstra(int graph[V][V], int src){
     int dist[V]; // 최단 거리를 파악하는 배열
     bool sptSet[V]; // 방문 했는지 체크 하는 bool형 배열
@@ -122,4 +146,5 @@ void dijkstra(int graph[V][V], int src){
         printSolution(dist, V);
     }
 }
+*/
 
