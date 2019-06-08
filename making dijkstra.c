@@ -1,10 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <limits.h> // INT_MAX에 이용
 
-// 정점의 개수를 정의
-#define V 5
-
-
+#define MAX_V 100
+#define MAX_CAR 100
+/*
 int minDistance(int dist[V], bool sptSet[V])
 {
     int min = INT_MAX, min_index;
@@ -29,9 +29,63 @@ void printSolution(int dist[], int n)
     for (int i = 0; i < V; i++)
         printf("%d \t\t %d\n", i, dist[i]);
 }
+*/
 
-void dijkstra(int graph[V][V], int src)
+int pile_output(void *, void *);
+void main_dijkstra(int, int, void *, void *);
+void dijkstra(int [V][V], int);
+int main()
 {
+    void * data = malloc(MAX_V^2);
+    void * data_c = malloc(MAX_CAR*2)
+    int * VC=pile_output(data, data_c);//int road[V][V] = (int (*)[V])data; //int road[V][V]; 연결 되지 않은 길 : -1, 나머지 연결된 길 : 두 점 사이의 거리 // 다익스트라를 이용할 그래프
+    int V=VC[0]; int C=VC[1];
+    free(VC);
+    // main_dijkstra(정점 수, 최단 거리를 구하고자 하는 그래프(포인터));
+    main_dijkstra(V, C, data, data_c);
+    
+    return 0;
+}
+
+int * pile_output(void * data, void *data_c){
+	FILE *fp;
+	fp=fopen("road.txt", "rt");
+	if (fp==NULL) {}
+	else {
+		puts("파일 오픈 실패\n");
+		return 0;
+	}
+    int V; //교차로 개수
+    fscanf(fp, "%d", V);
+    int C; //차 수
+    fscanf(fp, "%d", C);
+    int (* data2)[V] = (int (*)[V])data;
+    //ptr[10] => *(ptr+10)
+	for (int i=0;i<V;i++){
+        for(int j=0;j<V;j++){
+            fscanf(fp, "%d", data2[i][j]);//i점에서 j점까지의 거리
+            if (feof(fp))
+                break;
+        }
+	}
+	int (* data_c2)[v]=(int (*)[v])data_c;
+	for (int i=0;i<C;i++){
+        for(int j=0;j<2;j++){
+            fscanf(fp, "%d", data_c2[i][j]);//차 : i점에서 j점으로 이동
+            if(feof(fp))
+                break;
+        }
+	}
+	fclose(fp);
+	//파일 정보 참조
+	int * returnal = (int *)malloc(sizeof(int)*2);
+	returnal[0]=V; returnal[1]=C;
+	return returnal;
+}
+void main_dijkstra(int V, int C, void * data, void * data_c){
+
+}
+void dijkstra(int graph[V][V], int src){
     int dist[V]; // 최단 거리를 파악하는 배열
     bool sptSet[V]; // 방문 했는지 체크 하는 bool형 배열
 
@@ -69,20 +123,3 @@ void dijkstra(int graph[V][V], int src)
     }
 }
 
-int main()
-{
-    // 다익스트라를 이용할 그래프
-    int graph[V][V] =
-    {
-        { 0, 3, 6, 8, 7 },
-        { 3, 0, 2, 4, 8 },
-        { 6, 2, 0, 5, 5 },
-        { 8, 4, 5, 0, 2 },
-        { 7, 8, 5, 2, 0 },
-    };
-
-    // dijkstra(최단 거리를 구하고자 하는 그래프, 시작 하고자 하는 정점);
-    dijkstra(graph, 0);
-
-    return 0;
-}
