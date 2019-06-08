@@ -29,8 +29,48 @@ void printSolution(int dist[], int n)
         printf("%d \t\t %d\n", i, dist[i]);
 }
 */
-void dijkstra(int graph[V][V], int src)
+
+int pile_output(void *);
+void main_dijkstra(int, void *);
+void dijkstra(int [V][V], int);
+int main()
 {
+    void * data = malloc(MAX_V^2);
+    int V=pile_output(data);//int road[V][V] = (int (*)[V])data; //int road[V][V]; 연결 되지 않은 길 : -1, 나머지 연결된 길 : 두 점 사이의 거리 // 다익스트라를 이용할 그래프
+
+    // main_dijkstra(정점 수, 최단 거리를 구하고자 하는 그래프(포인터));
+    main_dijkstra(V, data);
+
+    return 0;
+}
+
+int pile_output(void * data){
+	FILE *fp;
+	fp=fopen("road.txt", "rt");
+	if (fp==NULL) {}
+	else {
+		puts("파일 오픈 실패\n");
+		return 0;
+	}
+    int V; //교차로 개수
+    fscanf(fp, "%d", V);
+    int (* data2)[V] = (int (*)[V])data;
+    //ptr[10] => *(ptr+10)
+	for (int i=0;i<V;i++){
+        for(int j=0;j<V;j++){
+            fscanf(fp, "%d", data2[i][j]);//i점에서 j점까지의 거리
+            if (feof(fp))
+                break;
+        }
+	}
+	fclose(fp);
+	//파일 정보 참조
+	return V;
+}
+void main_dijkstra(int V, void * data){
+
+}
+void dijkstra(int graph[V][V], int src){
     int dist[V]; // 최단 거리를 파악하는 배열
     bool sptSet[V]; // 방문 했는지 체크 하는 bool형 배열
 
@@ -68,38 +108,3 @@ void dijkstra(int graph[V][V], int src)
     }
 }
 
-int pile_output(void * data){
-	FILE *fp;
-	fp=fopen("road.txt", "rt");
-	if (fp==NULL) {}
-	else {
-		puts("파일 오픈 실패\n");
-		return 0;
-	}
-    int V; //교차로 개수
-    fscanf(fp, "%d", V);
-    int (* input2)[V] = (int (*)[V])data;
-    //ptr[10] => *(ptr+10)
-	int road[V][V]; //연결 되지 않은 길 : -1, 나머지 연결된 길 : 두 점 사이의 거리 // 다익스트라를 이용할 그래프
-	for (int i=0;i<V;i++){
-        for(int j=0;j<V;j++){
-            fscanf(fp, "%d", input2[i][j]);//i점에서 j점까지의 거리
-            if (feof(fp))
-                break;
-        }
-	}
-	fclose(fp);
-	//파일 정보 참조
-	return V;
-}
-
-int main()
-{
-    void * data = malloc(MAX_V^2);
-    int V=pile_output(data);//int road[V][V] = (int (*)[V])data;
-
-    // dijkstra(최단 거리를 구하고자 하는 그래프(포인터), 시작 하고자 하는 정점);
-    dijkstra(road, 0);
-
-    return 0;
-}
