@@ -1,3 +1,0 @@
-/home/dwkang/github/auto-car/projects/autocar_survey/CMakeFiles/rebuild_cache.dir
-/home/dwkang/github/auto-car/projects/autocar_survey/CMakeFiles/autocar_survey-0.0.0.out.dir
-/home/dwkang/github/auto-car/projects/autocar_survey/CMakeFiles/edit_cache.dir
