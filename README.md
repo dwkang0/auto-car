@@ -1,3 +1,5 @@
-# this is readme
+# 자동주행차량 시스템
 
-please write this latter...
+## 개발 순서
+- [ ] ㅁㄴ
+- [ ] ㅁㄴㅇ
