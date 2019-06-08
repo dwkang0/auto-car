@@ -10,7 +10,7 @@
 #include <vector>
 #include <queue>
 using namespace std;
-#define INF 987654321
+#define INF 2147483647
 
 int V, E;
 vector<pair<int, int> > graph[1000];//pair(toNode, edgeLenth)
@@ -61,7 +61,7 @@ vector<int> dijkstra_maxT(int K){
 		}
 		if(m == INF)
 			break;
-		s[N] = true; // N��° ���带 �湮.
+		s[N] = true;
 		for(int j=0;j<V;j++)
 		{
 			if(s[j]) continue;
