@@ -1,0 +1,1 @@
+/usr/bin/c++  -g  -rdynamic CMakeFiles/autocar_survey-0.0.0.out.dir/main.cpp.o  -o Debug/autocar_survey-0.0.0.out 
