@@ -1,0 +1,38 @@
+예시 파일에서 정보 따오는 함수
+int * pile_output(void * data, void *data_c){
+	FILE *fp;
+	fp=fopen("road.txt", "rt");
+	if (fp==NULL) {}
+	else {
+		puts("파일 오픈 실패\n");
+		return 0;
+	}
+    int V; //교차로 개수
+    fscanf(fp, "%d", V);
+    int C; //차 수
+    fscanf(fp, "%d", C);
+    int k; //k번째 값
+    fscanf(fp, "%d", k);
+    int (* data2)[V] = (int (*)[V])data;
+    //ptr[10] => *(ptr+10)
+	for (int i=0;i<V;i++){
+        for(int j=0;j<V;j++){
+            fscanf(fp, "%d", data2[i][j]);//i점에서 j점까지의 거리
+            if (feof(fp))
+                break;
+        }
+	}
+	int (* data_c2)[v]=(int (*)[v])data_c;
+	for (int i=0;i<C;i++){
+        for(int j=0;j<2;j++){
+            fscanf(fp, "%d", data_c2[i][j]);//차 : i점에서 j점으로 이동
+            if(feof(fp))
+                break;
+        }
+	}
+	fclose(fp);
+	//파일 정보 참조
+	int * returnal = (int *)malloc(sizeof(int)*3);
+	returnal[0]=V; returnal[1]=C; returnal[2]=k;
+	return returnal;
+}
