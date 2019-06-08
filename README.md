@@ -19,7 +19,7 @@
 [플로이드 와샬(참조용)](https://ko.wikipedia.org/wiki/%ED%94%8C%EB%A1%9C%EC%9D%B4%EB%93%9C-%EC%9B%8C%EC%85%9C_%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)
 
 ## 현황
-* [o] 1.
+* [x] 1.
 * [ ] 2.
 * [ ] 3.
 * [ ] 4.
