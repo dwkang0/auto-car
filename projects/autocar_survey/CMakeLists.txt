@@ -4,19 +4,29 @@ CMAKE_MINIMUM_REQUIRED ( VERSION 2.8 )
 # 프로젝트 이름 및 버전
 PROJECT ( "autocar_survey" )
 SET ( PROJECT_VERSION_MAJOR 0 )
-SET ( PROJECT_VERSION_MINOR 0.0 )
+SET ( PROJECT_VERSION_MINOR 0.1 )
 
 # 빌드 형상(Configuration) 및 주절주절 Makefile 생성 여부
 SET ( CMAKE_BUILD_TYPE Debug )
 SET ( CMAKE_VERBOSE_MAKEFILE true )
 
 # 빌드 대상 바이너리 파일명 및 소스파일 목록
-SET ( OUTPUT_ELF
-        "${CMAKE_PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.out"
-        )
-SET ( SRC_FILES
-        main.cpp
-        )
+if(WIN32)
+    message("Build OS: WIN32")
+    SET ( OUTPUT_ELF
+            "${CMAKE_PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.exe"
+            )
+elseif(UNIX)
+    message("Build OS: UNIX")
+    SET ( OUTPUT_ELF
+            "${CMAKE_PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.out"
+            )
+else()
+    message(FATAL_ERROR "This OS is not supported")
+endif()
+
+# 소스 불러오기
+file(GLOB SRC_FILES src/*.cpp)
 
 # 공통 컴파일러
 SET ( CMAKE_C_COMPILER "g++" )
@@ -47,5 +57,6 @@ SET ( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BUILD_TYPE} )
 SET ( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BUILD_TYPE}/lib )
 SET ( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BUILD_TYPE}/lib )
 
-# 빌드 대상 바이너리 추가
+message(${OUTPUT_ELF})
+message(${SRC_FILES})
 ADD_EXECUTABLE( ${OUTPUT_ELF} ${SRC_FILES} )
