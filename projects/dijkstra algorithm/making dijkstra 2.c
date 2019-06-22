@@ -10,46 +10,41 @@ int * file_output(void *, void *);
 void dijkstra_first(int, int, void *, void *);
 int main()
 {
-    void * data = malloc(MAX_V^2);
-    void * data_c = malloc(MAX_CAR*2);
+    void * data = malloc(4*MAX_V*MAX_V);
+    void * data_c = malloc(4*MAX_CAR*2);
     int * VC=file_output(data, data_c);//int (* road)[V] = (int (*)[V])data; //int road[V][V]; 연결 되지 않은 길 : -1, 나머지 연결된 길 : 두 점 사이의 거리 // 다익스트라를 이용할 그래프
     int V=VC[0]; int C=VC[1]; int k=VC[2];
     free(VC);
-    // main_dijkstra(정점 수, 최단 거리를 구하고자 하는 그래프(포인터));
-    //main_dijkstra(V, C, k, data, data_c);
     dijkstra_first(V, C, data, data_c);
     return 0;
 }
 int * file_output(void * data, void *data_c){
 	FILE *fp;
 	fp=fopen("road.txt", "rt");
-	if (fp==NULL) {}
+	if (fp!=NULL) {}
 	else {
 		puts("파일 오픈 실패\n");
 		return 0;
 	}
     int V; //교차로 개수
-    fscanf(fp, "%d", V);
+    fscanf(fp, "%d", &V);
     int C; //차 수
-    fscanf(fp, "%d", C);
+    fscanf(fp, "%d", &C);
     int k; //k번째 값
-    fscanf(fp, "%d", k);
+    fscanf(fp, "%d", &k);
     int (* data2)[V] = (int (*)[V])data;
     //ptr[10] => *(ptr+10)
-	for (int i=0;i<V;i++){
+	for(int i=0;i<V;i++){
         for(int j=0;j<V;j++){
-            fscanf(fp, "%d", data2[i][j]);//i점에서 j점까지의 거리
-            if(data2[i][j]==-1){
-                data2[i][j]=INF;
-            }
+            fscanf(fp, "%d", &data2[i][j]);//i점에서 j점까지의 거리
             if (feof(fp))
                 break;
         }
 	}
 	int (* data_c2)[2]=(int (*)[2])data_c;
-	for (int i=0;i<C;i++){
+	for(int i=0;i<C;i++){
         for(int j=0;j<2;j++){
-            fscanf(fp, "%d", data_c2[i][j]);//차 : i점에서 j점으로 이동
+            fscanf(fp, "%d", &data_c2[i][j]);//차 : i점에서 j점으로 이동
             if(feof(fp))
                 break;
         }
@@ -63,10 +58,14 @@ int * file_output(void * data, void *data_c){
 void dijkstra_first(int V, int C, void * data, void * data_c){
     int (* car_road)[2]=(int (*)[2])data_c;
     int (* road)[V]=(int (*)[V])data;
-    int roadtotal[V];                       int check[V];                       int link[V];
-    memset(roadtotal, INF, sizeof(int));    memset(check, 0, sizeof(int));      memset(link, -1, sizeof(int));
-    roadtotal[car_road[0][1]]=0;
-    link[car_road[0][1]]=car_road[0][1];
+    int roadtotal[V];                             int check[V];                         int link[V];
+    for(int i=0;i<V;i++){
+        roadtotal[i]=INF;
+        check[i]=0;
+        link[i]=-1;
+    }
+    roadtotal[car_road[0][0]]=0;
+    link[car_road[0][0]]=car_road[0][0];
     int u; int u_n;
     for(int c=0; c<V-1; c++){
         u_n=INF;
@@ -88,15 +87,23 @@ void dijkstra_first(int V, int C, void * data, void * data_c){
             }
             check[u]=1;
         }
+        /*
+        for(int i=0; i<V;i++){
+        printf("%d %d\n", check[i], roadtotal[i]);
+        }
+        printf("\n");
+        */
     }
     int car_roadtotal;    int data_link[V];
-    car_roadtotal=roadtotal[car_road[0][2]];
-    memset(data_link, -1, sizeof(int));
-    data_link[0]=car_road[0][2];
-    int linking;
+    car_roadtotal=roadtotal[car_road[0][1]];
+    for(int i=0;i<V;i++){
+        data_link[i]=-1;
+    }
+    data_link[0]=car_road[0][1];
+    int linking=V;
     for(int i=1;i<V;i++){
         data_link[i]=link[data_link[i-1]];
-        if(data_link[i]==car_road[0][1]){
+        if(data_link[i]==car_road[0][0]){
             linking=i+1;
             break;
         }
