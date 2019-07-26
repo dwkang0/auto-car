@@ -59,61 +59,58 @@ void dijkstra_first(int V, int C, void * data, void * data_c){
     int (* car_road)[2]=(int (*)[2])data_c;
     int (* road)[V]=(int (*)[V])data;
     int roadtotal[V];                             int check[V];                         int link[V];
-    for(int i=0;i<V;i++){
-        roadtotal[i]=INF;
-        check[i]=0;
-        link[i]=-1;
-    }
-    roadtotal[car_road[0][0]]=0;
-    link[car_road[0][0]]=car_road[0][0];
-    int u; int u_n;
-    for(int c=0; c<V-1; c++){
-        u_n=INF;
-        u=-1;
-        for(int i=0; i<V; i++){
-            if((check[i]==0)&&(roadtotal[i]<u_n)){
-                u=i;
-                u_n=roadtotal[i];
-            }
+    for(int car_n=0;car_n<C;car_n++){
+        for(int i=0;i<V;i++){
+            roadtotal[i]=INF;
+            check[i]=0;
+            link[i]=-1;
         }
-        if(u>-1){
-            for(int v=0; v<V; v++){
-                if((check[v]==0)&&(road[u][v]>=0)){
-                    if(roadtotal[u]<roadtotal[v]-road[u][v]){
-                        roadtotal[v]=roadtotal[u]+road[u][v];
-                        link[v]=u;
-                    }
+        roadtotal[car_road[car_n][0]]=0;
+        link[car_road[car_n][0]]=car_road[car_n][0];
+        int u; int u_n;
+        for(int c=0; c<V-1; c++){
+            u_n=INF;
+            u=-1;
+            for(int i=0; i<V; i++){
+                if((check[i]==0)&&(roadtotal[i]<u_n)){
+                    u=i;
+                    u_n=roadtotal[i];
                 }
             }
-            check[u]=1;
+            if(u>-1){
+                for(int v=0; v<V; v++){
+                    if((check[v]==0)&&(road[u][v]>=0)){
+                        if(roadtotal[u]<roadtotal[v]-road[u][v]){
+                            roadtotal[v]=roadtotal[u]+road[u][v];
+                            link[v]=u;
+                        }
+                    }
+                }
+                check[u]=1;
+            }
         }
-        /*
-        for(int i=0; i<V;i++){
-        printf("%d %d\n", check[i], roadtotal[i]);
+        int car_roadtotal;    int data_link[V];
+        car_roadtotal=roadtotal[car_road[car_n][1]];
+        for(int i=0;i<V;i++){
+            data_link[i]=-1;
+        }
+        data_link[0]=car_road[car_n][1];
+        int linking=V;
+        for(int i=1;i<V;i++){
+            data_link[i]=link[data_link[i-1]];
+            if(data_link[i]==car_road[car_n][0]){
+                linking=i+1;
+                break;
+            }
+        }
+        int car_link[linking];
+        for(int i=0;i<linking;i++){
+            car_link[linking-i-1]=data_link[i];
+        }
+        printf("차%d의 거리:%d\n차%d의 이동경로:", (car_n+1), car_roadtotal, (car_n+1));
+        for(int i=0;i<linking;i++){
+            printf("%d ", car_link[i]);
         }
         printf("\n");
-        */
-    }
-    int car_roadtotal;    int data_link[V];
-    car_roadtotal=roadtotal[car_road[0][1]];
-    for(int i=0;i<V;i++){
-        data_link[i]=-1;
-    }
-    data_link[0]=car_road[0][1];
-    int linking=V;
-    for(int i=1;i<V;i++){
-        data_link[i]=link[data_link[i-1]];
-        if(data_link[i]==car_road[0][0]){
-            linking=i+1;
-            break;
-        }
-    }
-    int car_link[linking];
-    for(int i=0;i<linking;i++){
-        car_link[linking-i-1]=data_link[i];
-    }
-    printf("차1의 거리:%d\n차1의 이동경로:", car_roadtotal);
-    for(int i=0;i<linking;i++){
-        printf("%d ", car_link[i]);
     }
 }
