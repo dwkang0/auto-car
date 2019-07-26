@@ -25,6 +25,7 @@ struct edge{
 vector<edge> *g;
 
 int * file_output(void *, void *);
+void ClearQueue(priority_queue<edge> &);
 void dijkstra_first(int, int, void *, void *);
 int main()
 {
@@ -76,7 +77,12 @@ int * file_output(void * data_v, void *data_c){
 	returnal[0]=V; returnal[1]=C;
 	return returnal;
 }
+void ClearQueue(priority_queue<edge> &someQueue){
+    priority_queue<edge> empty;
+    swap(someQueue, empty);
+}
 void dijkstra_first(int V, int C, void * data_v, void * data_c){
+    int (* v_xy)[2]=(int (*)[2])data_v;
     int (* car_road)[2]=(int (*)[2])data_c;
     double roadtotal[V];                             int check[V];                         int link[V];
     priority_queue<edge> road_t_q;      edge road_t;
@@ -93,22 +99,29 @@ void dijkstra_first(int V, int C, void * data_v, void * data_c){
         while(!road_t_q.empty()){
             road_t=road_t_q.top(); road_t_q.pop();
             u=road_t.to;
+            printf("%d", u);
+            if(u==car_road[car_n][1]){
+                break;
+            }
             if(check[u]==0){
                 for(int i=0; i<g[u].size(); i++){
-                    int v=g[u][i].to;
+                    int v=g[u][i].to; double h;
                     if(check[v]==0){
                         if(roadtotal[u]<roadtotal[v]-g[u][i].len){
                             roadtotal[v]=roadtotal[u]+g[u][i].len;
-                            road_t_q.push(edge(v, roadtotal[v]));
+                            h=sqrt(pow((v_xy[v][0]-v_xy[car_road[car_n][1]][0]), 2)+pow((v_xy[v][1]-v_xy[car_road[car_n][1]][1]), 2));
+                            road_t_q.push(edge(v, roadtotal[v]+h));
                             link[v]=u;
-                            printf("%d -> %d : %f\n", u, v, roadtotal[v]);
                         }
                     }
                 }
                 check[u]=1;
             }
         }
-        int car_roadtotal;    int data_link[V];
+        ClearQueue(road_t_q);
+        printf("\n");
+
+        double car_roadtotal;    int data_link[V];
         car_roadtotal=roadtotal[car_road[car_n][1]];
         for(int i=0;i<V;i++){
             data_link[i]=-1;
@@ -126,11 +139,10 @@ void dijkstra_first(int V, int C, void * data_v, void * data_c){
         for(int i=0;i<linking;i++){
             car_link[linking-i-1]=data_link[i];
         }
-        printf("차%d의 거리:%d\n차%d의 이동경로:", (car_n+1), car_roadtotal, (car_n+1));
+        printf("차%d의 거리:%.3f\n차%d의 이동경로:", (car_n+1), car_roadtotal, (car_n+1));
         for(int i=0;i<linking;i++){
             printf("%d ", car_link[i]);
         }
-        printf("\n");
+        printf("\n\n");
     }
 }
-
