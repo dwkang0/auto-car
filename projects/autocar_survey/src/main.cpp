@@ -21,6 +21,11 @@ int path[1000][1000][100];
 int maxT[100];
 int dis[1000][1000];
 
+class car
+{
+
+};
+
 void input();
 void autoFill();
 void makeEdge(int v1, int v2, int edgeLen);
@@ -37,6 +42,9 @@ struct comp
 std::priority_queue< std::pair<int, int>, std::vector<  std::pair<int, int> >, comp > q; //���ͽ�Ʈ�� �˰�������
 std::priority_queue<int> paths[1111];
 
+/////////////////////////////////////////////////////////////
+//                    int main()                           //
+/////////////////////////////////////////////////////////////
 int main() {
 	input();
 
