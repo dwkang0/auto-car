@@ -1,0 +1,41 @@
+예시 파일에서 정보 따오는 함수
+int * file_output(void * data_v, void *data_c){
+	FILE *fp;
+	fp=fopen("road.txt", "rt");
+	if (fp!=NULL) {}
+	else {
+		puts("파일 오픈 실패\n");
+		return 0;
+	}
+    int V; //교차로 개수
+    fscanf(fp, "%d", &V);
+    int E; //인접리스트 수
+    fscanf(fp, "%d", &E);
+    int C; //차 수
+    fscanf(fp, "%d", &C);
+    int (* data_v2)[2] = (int (*)[2])data_v;    //ptr[10] => *(ptr+10)
+	for(int i=0;i<V;i++){
+        fscanf(fp, "%*d %d %d", &data_v2[i][0], &data_v2[i][1]);//i번쨰 점의 좌표(x,y)
+        if (feof(fp))
+            break;
+	}
+	int (* data_c2)[2]=(int (*)[2])data_c;
+	for(int i=0;i<C;i++){
+        fscanf(fp, "%*d %d %d", &data_c2[i][0], &data_c2[i][1]);//i번째 차 : (0)점에서 (1)점으로 이동
+        if(feof(fp))
+            break;
+	}
+    g = (vector<edge> *) malloc(sizeof(vector<edge>)*V);
+	int k1, k2; double dis_p2p;
+	for(int i=0;i<E;i++){
+        fscanf(fp, "%d %d", &k1, &k2);
+        dis_p2p=sqrt(pow((data_v2[k1][0]-data_v2[k2][0]), 2)+pow((data_v2[k1][1]-data_v2[k2][1]), 2));
+        g[k1].push_back(edge(k2, dis_p2p));
+        g[k2].push_back(edge(k1, dis_p2p));
+	}
+	fclose(fp);
+	//파일 정보 참조
+	int * returnal = (int *)malloc(sizeof(int)*2);
+	returnal[0]=V; returnal[1]=C;
+	return returnal;
+}
