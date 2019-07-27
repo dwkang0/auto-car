@@ -1,7 +1,7 @@
-//HEADER START
-
 #ifndef _ASTAR_H_
 #define _ASTAR_H_
+
+//HEADER START
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,8 +34,8 @@ public:
 	VT startV;
 	VT endV;
 
-	road& (*nexti)(VT &now, int i);
 	int (*nextsize)(VT &now);
+	road& (*nexti)(VT &now, int i);
 //	int (*g)(void *now);
 	int (*h)(VT &now, VT &end);
 
@@ -104,9 +104,4 @@ int Astar<VT>::findpath(){
 }
 //FUNCTION END
 
-//q <노드, 총 거리> : priority queue
-//dis <노드, 총 거리> : roadtotal
-//road <노드, 간선거리> : 인접리스트
-
-#endif // _ASTAR_H_
-
+#endif
