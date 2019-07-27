@@ -17,13 +17,15 @@ struct state{
     heap<car_data> car_FT;
     int * carV;
     int * carFV;
-    int * carT;
+    double * carT;
     int carN;
-    int nowT;
+    double nowT;
+
+    static input * data;
 
     static int h(state &now, state &end);
-    int nextsize(state &now);
-    Astar<state>::road& nexti(state &now, int i);
+    static int nextsize(state &now);
+    static Astar<state>::road& nexti(state &now, int i);
 };
 //state::data=   ;
 

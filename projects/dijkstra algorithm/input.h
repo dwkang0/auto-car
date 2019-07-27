@@ -31,6 +31,9 @@ struct input{
     float * c_speed;
     vector<edge> *g;
 
+    int (* v_xy)[2];
+    int (* car_road)[2];
+
     ~input(){
         free(data_v);
         free(data_c);
@@ -83,6 +86,8 @@ input * file_output(){
         data->g[k2].push_back(edge(k1, dis_p2p));
 	}
 	fclose(fp);
+    data->v_xy=(int (*)[2])data->data_v;
+    data->car_road=(int (*)[2])data->data_c;
 	//파일 정보 참조
 	return data;
 }

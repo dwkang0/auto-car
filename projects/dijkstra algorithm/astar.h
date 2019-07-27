@@ -100,3 +100,8 @@ int Astar<VT>::findpath(){
 	return -1;
 }
 //FUNCTION END
+
+//q <노드, 총 거리> : priority queue
+//dis <노드, 총 거리> : roadtotal
+//road <노드, 간선거리> : 인접리스트
+
