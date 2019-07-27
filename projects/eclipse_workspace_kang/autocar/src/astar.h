@@ -36,6 +36,7 @@ public:
 
 	int (*nextsize)(VT &now);
 	road& (*nexti)(VT &now, int i);
+//	int (*g)(void *now);
 	int (*h)(VT &now, VT &end);
 
 	Astar(int VTsize, VT startV, VT endV, \
@@ -63,5 +64,44 @@ public:
 	};
 };
 //CLASS END
+
+//FUNCTION START
+template <typename VT>
+int Astar<VT>::findpath(){
+	astar::VTsize =VTsize;
+	unordered_map<VT, int, Astar::hashVT> dis;
+	unordered_set<VT, Astar::hashVT> visit;
+	priority_queue<road, vector<road>, Astar::roadcmp > q;
+
+	dis.insert(road(startV, 0));
+	q.push(road(startV, 0));
+
+	road now, next;
+	int i;
+	while(!q.empty()){
+		now = q.top(); q.pop();
+		if(visit.find(now.first) != visit.end()) continue;
+		if(now.first == endV){
+			return now.second;
+		}
+		visit.insert(now.first);
+
+		for(i=0; i<nextsize(now.first); i++){
+			next = nexti(now.first, i);
+			auto iter = dis.find(next.first);
+			if(iter==dis.end()){
+				dis.insert(road(next.first, now.second+next.second));
+				q.push(road(next.first, now.second+next.second+h(next.first, endV)));
+			}else{
+				if(iter->second > now.second+next.second){
+					iter->second = now.second+next.second;
+					q.push(road(next.first, now.second+next.second+h(next.first, endV)));
+				}
+			}
+		}
+	}
+	return -1;
+}
+//FUNCTION END
 
 #endif
