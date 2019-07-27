@@ -1,3 +1,6 @@
+#ifndef STATE_H_INCLUDED
+#define STATE_H_INCLUDED
+
 //HEADER START
 
 #include <stdio.h>
@@ -14,14 +17,17 @@
 #include <algorithm>
 
 #include "heap.h"
-#include "astar.h"
+//#include "Astar1.h"
 
 using namespace std;
-
 //HEADER END
 
-#ifndef STATE_H_INCLUDED
-#define STATE_H_INCLUDED
+template <typename T>
+class A{
+public:
+	T a;
+};
+
 struct state{
     struct car_data{
         double car_FT;
@@ -44,21 +50,22 @@ struct state{
 
     static int h(state &now, state &end);
     static int nextsize(state &now);
-    static Astar<state>::road& nexti(state &now, int i);
-
-    namespace std {
-    template <>
-    struct hash<state> {
-      size_t operator()(const state& s) const {//hash v, fv, (t-ft.top())
-	        std::size_t h = 0;
-	        for (int i= 0; i<astar::VTsize; i++) {
-	        	h ^= std::hash<int>{}(((unsigned char *)&a)[i])  + 0x9e3779b9 + (h << 6) + (h >> 2);
-	        }
-	        return h;
-      }
-    };
-    }  // namespace std
+//    static Astar11<state>::roadve& nexti(state &now, int i);
+    static Astar<state>::road a(int a);
+    static A<state> asd();
 };
 //state::data=   ;
+namespace std {
+template <>
+struct hash<state> {
+  size_t operator()(const state& s) const {//hash v, fv, (t-ft.top())
+	        std::size_t h = 0;
+//	        for (int i= 0; i<Astar1::VTsize; i++) {
+//	        	h ^= std::hash<int>{}(((unsigned char *)&a)[i])  + 0x9e3779b9 + (h << 6) + (h >> 2);
+//	        }
+	        return h;
+  }
+};
+}  // namespace std
 
 #endif // STATE_H_INCLUDED
