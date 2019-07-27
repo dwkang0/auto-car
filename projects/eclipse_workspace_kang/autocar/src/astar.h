@@ -1,3 +1,6 @@
+#ifndef _ASTAR_H_
+#define _ASTAR_H_
+
 //HEADER START
 
 #include <stdio.h>
@@ -100,3 +103,5 @@ int Astar<VT>::findpath(){
 	return -1;
 }
 //FUNCTION END
+
+#endif

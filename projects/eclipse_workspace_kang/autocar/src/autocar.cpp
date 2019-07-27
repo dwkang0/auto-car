@@ -84,46 +84,6 @@ void makeEdge(int v1, int v2, int edgeLen){
 	graph[v2].push_back(make_pair(v1, edgeLen));
 }
 
-
-
-class state{
-public:
-	int *carv;
-	int *cart;
-	int nowt;
-	int carn;
-	state(int carn){
-		this->carn = carn;
-		carv = new int[carn];
-		cart = new int[carn];
-		nowt=0;
-	}
-	~state(){
-		delete carv;
-	}
-	bool operator == (const state & b) const{
-		for(int i=0; i<carn; i++){
-			if(carv[i] != b.carv[i]) return 0;
-		}
-		return 1;
-	}
-	static int nextsize(state &v){
-		int min=0;
-		for(int i=1; i<v.carn; i++){
-			if(v.cart[min] > v.cart[i]) min = i;
-		}
-		return graph[v.carv[min]].size();
-	}
-
-	static Astar<state>::road & nexti(state &v, int i){
-		int min=0;
-		for(int i=1; i<v.carn; i++){
-			if(v.cart[min] > v.cart[i]) min = i;
-		}
-		return;
-	}
-};
-
 int nextsize(int &v){
 	return graph[v].size();
 }
@@ -139,14 +99,9 @@ public:
 	void execute(){
 		input();
 
-//		state s1(3);
-//		s1.carv[0]=1; s1.carv[1]=2; s1.carv[2]=10;
-//		state s2(3);
-//		s2.carv[0]=1; s2.carv[1]=2; s2.carv[2]=10;
-//		printf("asdasd");
-		Astar<int> astar = Astar<int>(sizeof(int), 1, 5, nexti, nextsize, h);
-//		Astar<int>::hashVT h;
-		printf("%d", astar.findpath());
+//		Astar<int> astar = Astar<int>(sizeof(int), 1, 5, nexti, nextsize, h);
+		Astar<int> a2 = Astar<int>(sizeof(int), 1, 5, NULL, NULL, NULL);
+//		printf("%d", astar.findpath());
 
 //		printf("%d", astar.findpath());
 //		printf("issame? %d", s1==s2);
@@ -155,18 +110,18 @@ public:
 
 int main(){
 
-//	as as;
-//	as.execute();
-	heap<int> a(10);
-	a.push(30);
-	a.push(10);
-	int index =a.push(20);
-
-	a.data[index]=5;
-	a.relax(index);
-
-	printf("%d\n", a.top()); a.pop();
-	printf("%d\n", a.top()); a.pop();
-	printf("%d\n", a.top()); a.pop();
+	as as;
+	as.execute();
+//	heap<int> a(10);
+//	a.push(30);
+//	a.push(10);
+//	int index =a.push(20);
+//
+//	a.data[index]=5;
+//	a.relax(index);
+//
+//	printf("%d\n", a.top()); a.pop();
+//	printf("%d\n", a.top()); a.pop();
+//	printf("%d\n", a.top()); a.pop();
 
 }
