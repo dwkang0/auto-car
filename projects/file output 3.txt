@@ -3,17 +3,17 @@ input * file_output(){
 	fp=fopen("road.txt", "rt");
 	if (fp!=NULL) {}
 	else {
-		puts("ÆÄÀÏ ¿ÀÇÂ ½ÇÆĞ\n");
+		puts("íŒŒì¼ ì˜¤í”ˆ ì‹¤íŒ¨\n");
 		return 0;
 	}
 
     input * data=(input *)malloc(sizeof(input));
 
-    int V; //±³Â÷·Î °³¼ö
+    int V;
     fscanf(fp, "%d", &V);   data->V=V;
-    int E; //ÀÎÁ¢¸®½ºÆ® ¼ö
+    int E;
     fscanf(fp, "%d", &E);   data->E=E;
-    int C; //Â÷ ¼ö
+    int C;
     fscanf(fp, "%d", &C);   data->C=C;
 
     data->data_v=(int *)malloc(4*V*2);
@@ -24,13 +24,13 @@ input * file_output(){
     int (* data_c2)[2]=(int (*)[2])data->data_c;
 
 	for(int i=0;i<V;i++){
-        fscanf(fp, "%*d %d %d", &data_v2[i][0], &data_v2[i][1]);//i¹ø¤Š Á¡ÀÇ ÁÂÇ¥(x,y)
+        fscanf(fp, "%*d %d %d", &data_v2[i][0], &data_v2[i][1]);
         if (feof(fp))
             break;
 	}
 
 	for(int i=0;i<C;i++){
-        fscanf(fp, "%*d %d %d %f", &data_c2[i][0], &data_c2[i][1], &data->c_speed[i]);//i¹øÂ° Â÷ : (0)Á¡¿¡¼­ (1)Á¡À¸·Î ÀÌµ¿
+        fscanf(fp, "%*d %d %d %f", &data_c2[i][0], &data_c2[i][1], &data->c_speed[i]);
         if(feof(fp))
             break;
 	}
@@ -43,6 +43,5 @@ input * file_output(){
         data->g[k2].push_back(edge(k1, dis_p2p));
 	}
 	fclose(fp);
-	//ÆÄÀÏ Á¤º¸ ÂüÁ¶
 	return data;
 }
