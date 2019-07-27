@@ -37,4 +37,54 @@ struct input{
         delete(g);
     }
 };
+
+input * file_output(){
+	FILE *fp;
+	fp=fopen("road.txt", "rt");
+	if (fp!=NULL) {}
+	else {
+		puts("파일 오픈 실패\n");
+		return 0;
+	}
+
+    input * data=(input *)malloc(sizeof(input));
+
+    int V; //교차로 개수
+    fscanf(fp, "%d", &V);   data->V=V;
+    int E; //인접리스트 수
+    fscanf(fp, "%d", &E);   data->E=E;
+    int C; //차 수
+    fscanf(fp, "%d", &C);   data->C=C;
+
+    data->data_v=(int *)malloc(4*V*2);
+    data->data_c=(int *)malloc(4*C*2);
+    data->c_speed=(float *)malloc(4*C);
+
+    int (* data_v2)[2] = (int (*)[2])data->data_v;    //ptr[10] => *(ptr+10)
+    int (* data_c2)[2]=(int (*)[2])data->data_c;
+
+	for(int i=0;i<V;i++){
+        fscanf(fp, "%*d %d %d", &data_v2[i][0], &data_v2[i][1]);//i번쨰 점의 좌표(x,y)
+        if (feof(fp))
+            break;
+	}
+
+	for(int i=0;i<C;i++){
+        fscanf(fp, "%*d %d %d %f", &data_c2[i][0], &data_c2[i][1], &data->c_speed[i]);//i번째 차 : (0)점에서 (1)점으로 이동
+        if(feof(fp))
+            break;
+	}
+    data->g = new vector<edge>[V];
+	int k1, k2; double dis_p2p;
+	for(int i=0;i<E;i++){
+        fscanf(fp, "%d %d", &k1, &k2);
+        dis_p2p=sqrt(pow((data_v2[k1][0]-data_v2[k2][0]), 2)+pow((data_v2[k1][1]-data_v2[k2][1]), 2));
+        data->g[k1].push_back(edge(k2, dis_p2p));
+        data->g[k2].push_back(edge(k1, dis_p2p));
+	}
+	fclose(fp);
+	//파일 정보 참조
+	return data;
+}
+
 #endif // INPUT_H_INCLUDED
