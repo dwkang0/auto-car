@@ -1,4 +1,4 @@
-void dijkstra_first(input * data){
+ï»¿void dijkstra_first(input * data){
     int (* v_xy)[2]=(int (*)[2])data->data_v;
     int (* car_road)[2]=(int (*)[2])data->data_c;
     int V=data->V;  int C=data->C;
@@ -132,7 +132,7 @@ void dijkstra_first(input * data){
         for(int i=0;i<linking;i++){
             car_link[linking-i-1]=data_link[i];
         }
-        printf("Â÷%dÀÇ °Å¸®:%.3f\nÂ÷%dÀÇ ÀÌµ¿°æ·Î:", (car_n+1), car_roadtotal/speed[car_n], (car_n+1));
+        printf("ì°¨%dì˜ ê±°ë¦¬:%.3f\nì°¨%dì˜ ì´ë™ê²½ë¡œ:", (car_n+1), car_roadtotal/speed[car_n], (car_n+1));
         for(int i=0;i<linking;i++){
             printf("%d ", car_link[i]);
         }
