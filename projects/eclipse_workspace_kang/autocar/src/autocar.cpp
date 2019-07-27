@@ -86,43 +86,43 @@ void makeEdge(int v1, int v2, int edgeLen){
 
 
 
-//class state{
-//public:
-//	int *carv;
-//	int *cart;
-//	int nowt;
-//	int carn;
-//	state(int carn){
-//		this->carn = carn;
-//		carv = new int[carn];
-//		cart = new int[carn];
-//		nowt=0;
-//	}
-//	~state(){
-//		delete carv;
-//	}
-//	bool operator == (const state & b) const{
-//		for(int i=0; i<carn; i++){
-//			if(carv[i] != b.carv[i]) return 0;
-//		}
-//		return 1;
-//	}
-//	static int nextsize(state &v){
-//		int min=0;
-//		for(int i=1; i<v.carn; i++){
-//			if(v.cart[min] > v.cart[i]) min = i;
-//		}
-//		return graph[v.carv[min]].size();
-//	}
-//
-//	static Astar<state>::road & nexti(state &v, int i){
-//		int min=0;
-//		for(int i=1; i<v.carn; i++){
-//			if(v.cart[min] > v.cart[i]) min = i;
-//		}
-//		return ;
-//	}
-//};
+class state{
+public:
+	int *carv;
+	int *cart;
+	int nowt;
+	int carn;
+	state(int carn){
+		this->carn = carn;
+		carv = new int[carn];
+		cart = new int[carn];
+		nowt=0;
+	}
+	~state(){
+		delete carv;
+	}
+	bool operator == (const state & b) const{
+		for(int i=0; i<carn; i++){
+			if(carv[i] != b.carv[i]) return 0;
+		}
+		return 1;
+	}
+	static int nextsize(state &v){
+		int min=0;
+		for(int i=1; i<v.carn; i++){
+			if(v.cart[min] > v.cart[i]) min = i;
+		}
+		return graph[v.carv[min]].size();
+	}
+
+	static Astar<state>::road & nexti(state &v, int i){
+		int min=0;
+		for(int i=1; i<v.carn; i++){
+			if(v.cart[min] > v.cart[i]) min = i;
+		}
+		return;
+	}
+};
 
 int nextsize(int &v){
 	return graph[v].size();

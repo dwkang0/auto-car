@@ -31,8 +31,8 @@ public:
 	VT startV;
 	VT endV;
 
-	road& (*nexti)(VT &now, int i);
 	int (*nextsize)(VT &now);
+	road& (*nexti)(VT &now, int i);
 //	int (*g)(void *now);
 	int (*h)(VT &now, VT &end);
 
