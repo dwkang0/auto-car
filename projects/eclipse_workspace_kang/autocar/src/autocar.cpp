@@ -1,5 +1,6 @@
 #include "astar.h"
 #include "heap.h"
+#include "state.h"
 #include <stdio.h>
 #include <vector>
 
