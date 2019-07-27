@@ -40,7 +40,7 @@ public:
 //public:
 	heap(int maxsize):maxsize(maxsize), heapsize(0){
 		data = new T[maxsize+1];
-		index = new T[maxsize+1];
+		index = new int[maxsize+1];
 	}
 	~heap(){
 		delete data;

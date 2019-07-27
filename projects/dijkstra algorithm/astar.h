@@ -1,5 +1,8 @@
 //HEADER START
 
+#ifndef _ASTAR_H_
+#define _ASTAR_H_
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -104,4 +107,6 @@ int Astar<VT>::findpath(){
 //q <노드, 총 거리> : priority queue
 //dis <노드, 총 거리> : roadtotal
 //road <노드, 간선거리> : 인접리스트
+
+#endif // _ASTAR_H_
 
