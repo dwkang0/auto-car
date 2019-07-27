@@ -17,16 +17,10 @@
 #include <algorithm>
 
 #include "heap.h"
-//#include "Astar1.h"
+#include "astar.h"
 
 using namespace std;
 //HEADER END
-
-template <typename T>
-class A{
-public:
-	T a;
-};
 
 struct state{
     struct car_data{
@@ -52,18 +46,17 @@ struct state{
     static int nextsize(state &now);
 //    static Astar11<state>::roadve& nexti(state &now, int i);
     static Astar<state>::road a(int a);
-    static A<state> asd();
 };
 //state::data=   ;
 namespace std {
 template <>
 struct hash<state> {
   size_t operator()(const state& s) const {//hash v, fv, (t-ft.top())
-	        std::size_t h = 0;
-//	        for (int i= 0; i<Astar1::VTsize; i++) {
+//	        std::size_t h = 0;
+//	        for (int i= 0; i<10; i++) {
 //	        	h ^= std::hash<int>{}(((unsigned char *)&a)[i])  + 0x9e3779b9 + (h << 6) + (h >> 2);
 //	        }
-	        return h;
+//	        return h;
   }
 };
 }  // namespace std
