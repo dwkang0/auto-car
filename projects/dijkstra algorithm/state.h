@@ -1,4 +1,5 @@
 #include "heap.h"
+#include "astar.h"
 
 #ifndef STATE_H_INCLUDED
 #define STATE_H_INCLUDED
@@ -20,9 +21,9 @@ struct state{
     int carN;
     int nowT;
 
-    static int h(state &now, state &end){
-
-    }
+    static int h(state &now, state &end);
+    int nextsize(state &now);
+    Astar<state>::road& nexti(state &now, int i);
 };
 //state::data=   ;
 
