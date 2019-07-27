@@ -1,4 +1,11 @@
-﻿# 자동주행차량 시스템
+# 현재 TODO
+## Astar 사용
+1. h, nextsize, nexti
+2. hash, path link(Astar에서)
+3. input from file -> state, print(gui)
+---
+
+# 자동주행차량 시스템
 
 ## 개발 순서
 1. 도로 -> 프로그램 대입
