@@ -45,23 +45,32 @@ public:
 	~heap(){
 		delete data;
 		delete index;
-//		delete ditohi;
-//		delete hitodi;
 	}
-	inline void relax(const int i) const{
+	inline void relax(int i){
+//		printf("asd");
 		//up
 		while(data[index[parent(i)]] < data[index[i]] && i>1){
 			heapfunc::swap(index[parent(i)], index[i]);
 		}
 		//down
 		int lrmax;
-		while(i*2 <= heapsize){
+//		printf("asd,%d][]",i);
+		while(rightc(i) <= heapsize){
+//			printf("asd");
 			if( data[leftc(i)] < data[rightc(i)] ){
 				lrmax=rightc(i);
 			}else lrmax=leftc(i);
 			if(!(data[index[lrmax]] < data[index[i]])) break;
 			heapfunc::swap(index[i], index[lrmax]);
 			i=lrmax;
+		}
+//		printf("i=%d\n", i);
+		lrmax=leftc(i);
+		if(lrmax == heapsize){
+			if(!(data[index[lrmax]] < data[index[i]])){
+				heapfunc::swap(index[i], index[lrmax]);
+//				printf("!!!");
+			}
 		}
 	}
 	inline int push(const T &x){
@@ -79,13 +88,24 @@ public:
 		index[1]=index[heapsize--];
 		int now=1;
 		int lrmax;
-		while(now*2 <= heapsize){
+		while(rightc(now) <= heapsize){
+//			printf("now=%d\n",now);
 			if( data[leftc(index[now])] < data[rightc(index[now])] ){
 				lrmax=rightc(now);
 			}else lrmax=leftc(now);
+//			printf("goto=>%d\n",lrmax);
 			if(!(data[index[lrmax]] < data[index[now]])) break;
 			heapfunc::swap(index[now], index[lrmax]);
 			now=lrmax;
+		}
+//		printf("now=%d\n", now);
+		lrmax=leftc(now);
+		if(lrmax == heapsize){
+//			printf("???, %d\n", lrmax);
+			if(!(data[index[lrmax]] < data[index[now]])){
+//				printf("222");
+				heapfunc::swap(index[now], index[lrmax]);
+			}
 		}
 	}
 	inline T top() const{

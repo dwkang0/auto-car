@@ -113,11 +113,11 @@ public:
 };
 
 int main(){
-	state *s = (state *)malloc(sizeof(state(10)));
-	state &s2(*(state*)malloc(sizeof(state)));
-	state &s3 = *s;
-	state s4(10);
-	state &s5=s4;
+//	state *s = (state *)malloc(sizeof(state(10)));
+//	state &s2(*(state*)malloc(sizeof(state)));
+//	state &s3 = *s;
+//	state s4(10);
+//	state &s5=s4;
 //	heap<int> a(10);
 //	a.push(30);
 //	a.push(10);
@@ -125,10 +125,17 @@ int main(){
 //
 //	a.data[index]=5;
 //	a.relax(index);
-//
+//	printf("%d %d %d\n", a.data[1], a.data[2], a.data[3]);
 //	printf("%d\n", a.top()); a.pop();
 //	printf("%d\n", a.top()); a.pop();
 //	printf("%d\n", a.top()); a.pop();
+	heap<state::car_data> a(10);
+	a.push(state::car_data(7));
+	a.push(state::car_data(5));
+	a.push(state::car_data(10));
+	printf("%f\n", a.top().car_FT); a.pop();
+	printf("%f\n", a.top().car_FT); a.pop();
+	printf("%f\n", a.top().car_FT); a.pop();
 
 //	state s(2);
 //	s.carV[0]=0; s.carV[1]=10;

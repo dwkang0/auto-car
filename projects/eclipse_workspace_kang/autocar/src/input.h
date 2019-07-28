@@ -1,4 +1,5 @@
-//#ifndef _INPUT_H_
+//#ifndef INPUT_H_INCLUDED
+//#define INPUT_H_INCLUDED
 //
 //#include <stdio.h>
 //#include <stdlib.h>
@@ -13,8 +14,6 @@
 //#define MAX_CAR 100
 //#define INF ((int)((((unsigned int)0)-((unsigned int)1))/2)-1)
 //
-//#ifndef INPUT_H_INCLUDED
-//#define INPUT_H_INCLUDED
 //struct edge{
 //    int to;
 //    double len;
@@ -50,34 +49,34 @@
 //	fp=fopen("road.txt", "rt");
 //	if (fp!=NULL) {}
 //	else {
-//		puts("���� ���� ����\n");
+//		puts("파일 오픈 실패\n");
 //		return 0;
 //	}
 //
 //    input * data=(input *)malloc(sizeof(input));
 //
-//    int V; //������ ����
+//    int V;
 //    fscanf(fp, "%d", &V);   data->V=V;
-//    int E; //��������Ʈ ��
+//    int E;
 //    fscanf(fp, "%d", &E);   data->E=E;
-//    int C; //�� ��
+//    int C;
 //    fscanf(fp, "%d", &C);   data->C=C;
 //
 //    data->data_v=(int *)malloc(4*V*2);
 //    data->data_c=(int *)malloc(4*C*2);
 //    data->c_speed=(float *)malloc(4*C);
 //
-//    int (* data_v2)[2] = (int (*)[2])data->data_v;    //ptr[10] => *(ptr+10)
+//    int (* data_v2)[2] = (int (*)[2])data->data_v;
 //    int (* data_c2)[2]=(int (*)[2])data->data_c;
 //
 //	for(int i=0;i<V;i++){
-//        fscanf(fp, "%*d %d %d", &data_v2[i][0], &data_v2[i][1]);//i���� ���� ��ǥ(x,y)
+//        fscanf(fp, "%*d %d %d", &data_v2[i][0], &data_v2[i][1]);
 //        if (feof(fp))
 //            break;
 //	}
 //
 //	for(int i=0;i<C;i++){
-//        fscanf(fp, "%*d %d %d %f", &data_c2[i][0], &data_c2[i][1], &data->c_speed[i]);//i��° �� : (0)������ (1)������ �̵�
+//        fscanf(fp, "%*d %d %d %f", &data_c2[i][0], &data_c2[i][1], &data->c_speed[i]);
 //        if(feof(fp))
 //            break;
 //	}
@@ -92,8 +91,7 @@
 //	fclose(fp);
 //    data->v_xy=(int (*)[2])data->data_v;
 //    data->car_road=(int (*)[2])data->data_c;
-//	//���� ���� ����
 //	return data;
 //}
 //
-//#endif // INPUT_H_INCLUDED
+////#endif // INPUT_H_INCLUDED
