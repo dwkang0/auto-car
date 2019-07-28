@@ -8,6 +8,7 @@
 #include <stdarg.h>
 #include <memory.h>
 #include <malloc.h>
+#include <math.h>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -18,7 +19,7 @@
 
 #include "heap.h"
 #include "astar.h"
-//#include "input.h"
+#include "input.h"
 
 using namespace std;
 //HEADER END
@@ -70,6 +71,7 @@ struct state{
 //    bool operator
 };
 //state::data=   ;
+//input * state::data;
 namespace std {
 template <>
 struct hash<state> {
