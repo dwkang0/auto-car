@@ -59,7 +59,7 @@ public:
 			if( data[leftc(i)] < data[rightc(i)] ){
 				lrmax=rightc(i);
 			}else lrmax=leftc(i);
-			if(data[index[i]] >= data[index[lrmax]]) break;
+			if(!(data[index[lrmax]] < data[index[i]])) break;
 			heapfunc::swap(index[i], index[lrmax]);
 			i=lrmax;
 		}
@@ -83,7 +83,7 @@ public:
 			if( data[leftc(index[now])] < data[rightc(index[now])] ){
 				lrmax=rightc(now);
 			}else lrmax=leftc(now);
-			if(data[index[now]] >= data[index[lrmax]]) break;
+			if(!(data[index[lrmax]] < data[index[now]])) break;
 			heapfunc::swap(index[now], index[lrmax]);
 			now=lrmax;
 		}
