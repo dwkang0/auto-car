@@ -113,9 +113,11 @@ public:
 };
 
 int main(){
-
-	as as;
-	as.execute();
+	state *s = (state *)malloc(sizeof(state(10)));
+	state &s2(*(state*)malloc(sizeof(state)));
+	state &s3 = *s;
+	state s4(10);
+	state &s5=s4;
 //	heap<int> a(10);
 //	a.push(30);
 //	a.push(10);
