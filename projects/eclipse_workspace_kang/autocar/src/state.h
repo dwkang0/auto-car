@@ -38,9 +38,11 @@ using namespace statefunc;
 
 struct state{
     struct car_data{
-        double car_FT;
-        car_data(double car_FT=0.0): car_FT(car_FT){
+        int car_FT;
+        int car_n;
+        car_data(int car_FT=0, int car_n=0){
             this->car_FT = car_FT;
+            this->car_n = car_n;
         }
 
         bool operator < (const car_data &b) const{
