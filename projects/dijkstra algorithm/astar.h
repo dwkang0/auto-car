@@ -53,8 +53,8 @@ public:
 	int (*nextsize)(VT &now);
 	road& (*nexti)(VT &now, int i);
 	int (*h)(VT &now, VT &end);
-
 	input * data;
+
 	Astar(VT &startV, VT &endV, \
 			road& (*nexti)(VT &now, int i),int (*nextsize)(VT &now), \
 			int (*h)(VT &now, VT &end), input *data):\
@@ -108,7 +108,7 @@ typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
 	road now, next;
 
 	int i;
-	while(!q.heapsize){
+	while(q.heapsize){
 		now = q.top(); q.pop();
 		log("inwhile: %p, index[1]%d",&now.first, now.first.car_FT.index[1]);
 		if(visit.find(now.first) != visit.end()) continue;
@@ -143,7 +143,7 @@ typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
 			}
 		}
 	}
-	return road(startV, -1);
+	return road(*startV, -1);
 }
 //FUNCTION END
 #endif
