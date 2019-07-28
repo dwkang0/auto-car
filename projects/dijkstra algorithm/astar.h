@@ -36,7 +36,6 @@ public:
 	road& (*nexti)(VT &now, int i);
 	int (*h)(VT &now, VT &end);
 	input * data;
-
 	Astar(VT startV, VT endV, \
 			road& (*nexti)(VT &now, int i),int (*nextsize)(VT &now), \
 			int (*h)(VT &now, VT &end), input *data):\
@@ -82,7 +81,7 @@ int Astar<VT>::findpath(){
 	q.push(road(startV, 0));
 	road now, next;
 
-	int data_link[data->C][data->V];
+    int data_link[data->C][data->V];
 	memset(data_link, -1, sizeof(int)*(data->C)*(data->V));
 	int i;
 	while(!q.empty()){
