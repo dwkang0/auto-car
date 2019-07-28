@@ -101,9 +101,9 @@ Astar<state>::road & state::nexti(state &now, int i){
     }
 
     state next(carnumber);
-    //memcpy(next.car_FT.data+1, now.car_FT.data+1, sizeof(car_data)*now.car_FT.heapsize);
-    //memcpy(next.car_FT.index+1, now.car_FT.index+1, sizeof(int)*now.car_FT.heapsize);
-    //next.car_FT.heapsize=now.car_FT.heapsize;
+    memcpy(next.car_FT.data+1, now.car_FT.data+1, sizeof(car_data)*now.car_FT.heapsize);
+    memcpy(next.car_FT.index+1, now.car_FT.index+1, sizeof(int)*now.car_FT.heapsize);
+    next.car_FT.heapsize=now.car_FT.heapsize;
     for(int car_n=0; car_n<data->C; car_n++){
         next.carV[car_n]=now.carV[car_n];
         next.carFV[car_n]=now.carFV[car_n];

@@ -75,18 +75,9 @@ int Astar<VT>::findpath(){
 	unordered_set<VT> visit;
 	priority_queue<road, vector<road>, Astar::roadcmp > q;
 
-    printf("bbbbb\n");
-    road a;
-	a=road(startV, 0);
-	printf("%d", a.first.carN);
-
 	dis.insert(road(startV, 0));
-	printf("bcbc\n");
 	q.push(road(startV, 0));
-
-    printf("ccccc");
 	road now, next;
-	printf("ddddd");
 	int i;
 	while(!q.empty()){
 		now = q.top(); q.pop();
