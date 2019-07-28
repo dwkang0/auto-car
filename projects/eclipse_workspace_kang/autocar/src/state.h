@@ -56,6 +56,11 @@ struct state{
     state(int carN): \
     		nowT(0), carN(carN), car_FT(carN),\
 			carV(new int[carN]), carFV(new int[carN]), carT(new double[carN]){}
+    ~state(){
+    	delete carV;
+    	delete carFV;
+    	delete carT;
+    }
 
     static int h(state &now, state &end);
     static int nextsize(state &now);
