@@ -15,15 +15,7 @@ input * file_output();
 void dijkstra_first(input *);
 int main()
 {
-	heap<state::car_data> a(10);
-	a.push(state::car_data(7, 2));
-	a.push(state::car_data(5, 2));
-	a.push(state::car_data(10, 3));
-	printf("%d\n", a.top().car_FT); a.pop();
-	printf("%d\n", a.top().car_FT); a.pop();
-	printf("%d\n", a.top().car_FT); a.pop();
-
-    /*input * data=file_output();
+    input * data=file_output();
     state Start_ST(data->C), End_ST(data->C);
 
     End_ST.carN=0;
@@ -39,7 +31,7 @@ int main()
     state::data=data;
     Astar<state> astar = Astar<state>(Start_ST, End_ST, state::nexti, state::nextsize, state::h);
     int time=astar.findpath();
-    printf("%d", time);*/
+    printf("%d", time);
     return 0;
 }
 

@@ -16,6 +16,8 @@
 #include <iostream>
 #include <algorithm>
 
+#include "state.h"
+
 using namespace std;
 
 //HEADER END
@@ -69,15 +71,22 @@ public:
 //FUNCTION START
 template <typename VT>
 int Astar<VT>::findpath(){
-	printf("aaa\n");
 	unordered_map<VT, int> dis;
 	unordered_set<VT> visit;
 	priority_queue<road, vector<road>, Astar::roadcmp > q;
 
+    printf("bbbbb\n");
+    road a;
+	a=road(startV, 0);
+	printf("%d", a.first.carN);
+
 	dis.insert(road(startV, 0));
+	printf("bcbc\n");
 	q.push(road(startV, 0));
 
+    printf("ccccc");
 	road now, next;
+	printf("ddddd");
 	int i;
 	while(!q.empty()){
 		now = q.top(); q.pop();
