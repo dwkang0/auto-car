@@ -79,7 +79,7 @@ public:
 		now = heapsize;
 		data[now] = x;
 		index[now] = heapsize;
-		while(data[index[parent(now)]] < data[index[now]] && now>1){
+		while(now>1 && data[index[parent(now)]] < data[index[now]]){
 			heapfunc::swap(index[parent(now)], index[now]);
 		}
 		return heapsize;
