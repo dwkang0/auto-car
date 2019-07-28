@@ -29,7 +29,7 @@ int main()
         End_ST.carFV[car_n]=data->car_road[car_n][1];
     }
     state::data=data;
-    Astar<state> astar = Astar<state>(Start_ST, End_ST, state::nexti, state::nextsize, state::h);
+    Astar<state> astar = Astar<state>(Start_ST, End_ST, state::nexti, state::nextsize, state::h, data);
     int time=astar.findpath();
     printf("%d", time);
     return 0;

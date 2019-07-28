@@ -17,6 +17,7 @@
 #include <algorithm>
 
 #include "state.h"
+#include "input.h"
 
 using namespace std;
 
@@ -34,14 +35,16 @@ public:
 	int (*nextsize)(VT &now);
 	road& (*nexti)(VT &now, int i);
 	int (*h)(VT &now, VT &end);
+	input * data;
 
 	Astar(VT startV, VT endV, \
 			road& (*nexti)(VT &now, int i),int (*nextsize)(VT &now), \
-			int (*h)(VT &now, VT &end)):\
-			startV(*(VT*)malloc(sizeof(VT))), endV(*(VT*)malloc(sizeof(VT))),nexti(nexti), nextsize(nextsize), h(h)\
+			int (*h)(VT &now, VT &end), input *data):\
+			startV(*(VT*)malloc(sizeof(VT))), endV(*(VT*)malloc(sizeof(VT))),nexti(nexti), nextsize(nextsize), h(h), data((input*)malloc(sizeof(input)))\
 			{
 		memcpy(&this->startV, &startV, sizeof(VT));
 		memcpy(&this->endV, &endV, sizeof(VT));
+		memcpy(&this->data, &data, sizeof(input));
 			}
 	~Astar(){
 		free(&startV);
@@ -78,6 +81,9 @@ int Astar<VT>::findpath(){
 	dis.insert(road(startV, 0));
 	q.push(road(startV, 0));
 	road now, next;
+
+	int data_link[data->C][data->V];
+	memset(data_link, -1, sizeof(int)*(data->C)*(data->V));
 	int i;
 	while(!q.empty()){
 		now = q.top(); q.pop();
@@ -92,10 +98,22 @@ int Astar<VT>::findpath(){
 			next = nexti(now.first, i);
 			auto iter = dis.find(next.first);
 			if(iter==dis.end()){
+                int carnumber;
+                for(carnumber=0;carnumber<data->C;carnumber++){
+                    if(next.first.carT[carnumber]==next.first.nowT)
+                        break;
+                }
+                data_link[carnumber][next.first.carFV[carnumber]]=next.first.carV[carnumber];
 				dis.insert(road(next.first, now.second+next.second));
 				q.push(road(next.first, now.second+next.second+h(next.first, endV)));
 			}else{
 				if(iter->second > now.second+next.second){
+				    int carnumber;
+                    for(carnumber=0;carnumber<data->C;carnumber++){
+                        if(next.first.carT[carnumber]==next.first.nowT)
+                            break;
+                    }
+                    data_link[carnumber][next.first.carFV[carnumber]]=next.first.carV[carnumber];
 					iter->second = now.second+next.second;
 					q.push(road(next.first, now.second+next.second+h(next.first, endV)));
 				}

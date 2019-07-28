@@ -115,25 +115,26 @@ Astar<state>::road & state::nexti(state &now, int i){
     next.carT[a.car_n]=a.car_FT;
     next.nowT=a.car_FT;
     next.carN=carnumber;
-    if(next.carN!=now.carN){
-        next.car_FT.pop();
-    }
 
     double flowtime=(FuV.len)/(data->c_speed[a.car_n]);
     int flowtime2=(int)(100*flowtime);
-    for(int car_n=0;car_n<data->C;car_n++){
-        if(car_n!=a.car_n){
-            if(next.carV[car_n]==next.carV[a.car_n]){
-                if(next.carFV[car_n]==next.carFV[a.car_n]){
-                    if(next.car_FT.data[car_n+1].car_FT>next.carT[a.car_n]+flowtime2){
-                        flowtime2=next.car_FT.data[car_n+1].car_FT-next.carT[a.car_n];
+    if(next.carN!=now.carN){
+        next.car_FT.pop();
+    }
+    else{
+        for(int car_n=0;car_n<data->C;car_n++){
+            if(car_n!=a.car_n){
+                if(next.carV[car_n]==next.carV[a.car_n]){
+                    if(next.carFV[car_n]==next.carFV[a.car_n]){
+                        if(next.car_FT.data[car_n+1].car_FT>next.carT[a.car_n]+flowtime2){
+                            flowtime2=next.car_FT.data[car_n+1].car_FT-next.carT[a.car_n];
+                        }
                     }
                 }
             }
         }
+        next.car_FT.data[a.car_n+1].car_FT+=flowtime2;
     }
-    next.car_FT.data[a.car_n+1].car_FT+=flowtime2;
-
     Astar<state>::road todis(next, flowtime2);
     return todis;
 }
