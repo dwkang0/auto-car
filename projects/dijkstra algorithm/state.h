@@ -130,53 +130,54 @@ int state::nextsize(state &now){
 	return number;
 }
 Astar<state>::road & state::nexti(state &now, int i){
-	log("nexti:");
-	car_data a=now.car_FT.top();
-	edge FuV=data->g[now.carFV[a.car_n]][i];
-	int flowV=FuV.to;
+log("nexti:");
+    car_data a=now.car_FT.top();
+    edge FuV=data->g[now.carFV[a.car_n]][i];
+    int flowV=FuV.to;
 
-	int carnumber=now.carN;
-	if(flowV==data->car_road[a.car_n][1]){
-		carnumber--;
-	}
+    int carnumber=now.carN;
+    if(flowV==data->car_road[a.car_n][1]){
+        carnumber--;
+    }
 
-	state next(carnumber);
-	memcpy(next.car_FT.data+1, now.car_FT.data+1, sizeof(car_data)*now.car_FT.heapsize);
-	memcpy(next.car_FT.index+1, now.car_FT.index+1, sizeof(int)*now.car_FT.heapsize);
-	next.car_FT.heapsize=now.car_FT.heapsize;
-	for(int car_n=0; car_n<data->C; car_n++){
-		next.carV[car_n]=now.carV[car_n];
-		next.carFV[car_n]=now.carFV[car_n];
-		next.carT[car_n]=now.carT[car_n];
-	}
+    state next(carnumber);
+    memcpy(next.car_FT.data+1, now.car_FT.data+1, sizeof(car_data)*now.car_FT.heapsize);
+    memcpy(next.car_FT.index+1, now.car_FT.index+1, sizeof(int)*now.car_FT.heapsize);
+    next.car_FT.heapsize=now.car_FT.heapsize;
+    for(int car_n=0; car_n<data->C; car_n++){
+        next.carV[car_n]=now.carV[car_n];
+        next.carFV[car_n]=now.carFV[car_n];
+        next.carT[car_n]=now.carT[car_n];
+    }
 
-	next.carV[a.car_n]=now.carFV[a.car_n];
-	next.carFV[a.car_n]=flowV;
-	next.carT[a.car_n]=a.car_FT;
-	next.nowT=a.car_FT;
-	next.carN=carnumber;
-	if(next.carN!=now.carN){
-		next.car_FT.pop();
-	}
+    next.carV[a.car_n]=now.carFV[a.car_n];
+    next.carFV[a.car_n]=flowV;
+    next.carT[a.car_n]=a.car_FT;
+    next.nowT=a.car_FT;
+    next.carN=carnumber;
 
-	double flowtime=(FuV.len)/(data->c_speed[a.car_n]);
-	int flowtime2=(int)(100*flowtime);
-	for(int car_n=0;car_n<data->C;car_n++){
-		if(car_n!=a.car_n){
-			if(next.carV[car_n]==next.carV[a.car_n]){
-				if(next.carFV[car_n]==next.carFV[a.car_n]){
-					if(next.car_FT.data[car_n+1].car_FT>next.carT[a.car_n]+flowtime2){
-						flowtime2=next.car_FT.data[car_n+1].car_FT-next.carT[a.car_n];
-					}
-				}
-			}
-		}
-	}
-	next.car_FT.data[a.car_n+1].car_FT+=flowtime2;
-
-	Astar<state>::road todis(next, flowtime2);
-	log("nexti end");
-	return todis;
+    double flowtime=(FuV.len)/(data->c_speed[a.car_n]);
+    int flowtime2=(int)(100*flowtime);
+    if(next.carN!=now.carN){
+        next.car_FT.pop();
+    }
+    else{
+        for(int car_n=0;car_n<data->C;car_n++){
+            if(car_n!=a.car_n){
+                if(next.carV[car_n]==next.carV[a.car_n]){
+                    if(next.carFV[car_n]==next.carFV[a.car_n]){
+                        if(next.car_FT.data[car_n+1].car_FT>next.carT[a.car_n]+flowtime2){
+                            flowtime2=next.car_FT.data[car_n+1].car_FT-next.carT[a.car_n];
+                        }
+                    }
+                }
+            }
+        }
+        next.car_FT.data[a.car_n+1].car_FT+=flowtime2;
+    }
+    Astar<state>::road todis(next, flowtime2);
+log("nexti end");
+    return todis;
 }
 namespace std {
 template <>

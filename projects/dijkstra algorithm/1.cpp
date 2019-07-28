@@ -29,9 +29,11 @@ int main()
         End_ST.carFV[car_n]=data->car_road[car_n][1];
     }
     state::data=data;
-    Astar<state> astar = Astar<state>(Start_ST, End_ST, state::nexti, state::nextsize, state::h);
-    int time=astar.findpath();
-    printf("%d", time);
+    Astar<state> astar = Astar<state>(Start_ST, End_ST, state::nexti, state::nextsize, state::h, data);
+
+    turn * turn_data=new turn(data->C, data->V);
+    Astar<state>::road result=astar.findpath(turn_data);
+    printf("%d", result.second);
     return 0;
 }
 

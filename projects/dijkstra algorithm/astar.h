@@ -16,12 +16,30 @@
 #include <iostream>
 #include <algorithm>
 
+
 #include "log.h"
 class state;
+
+#include "state.h"
+#include "input.h"
 
 using namespace std;
 
 //HEADER END
+
+struct turn{
+    int *data_link;
+    int V;
+    turn (int C, int V):\
+        data_link((int *)malloc(4*C*V)), V(V)\
+        {
+            memset(data_link, -1, sizeof(int)*C*V);
+        }
+
+    int &link(int i, int j){
+        return data_link[i*V+j];
+    }
+};
 
 //CLASS START
 template <typename VT>
@@ -36,15 +54,16 @@ public:
 	road& (*nexti)(VT &now, int i);
 	int (*h)(VT &now, VT &end);
 
+	input * data;
 	Astar(VT &startV, VT &endV, \
 			road& (*nexti)(VT &now, int i),int (*nextsize)(VT &now), \
-			int (*h)(VT &now, VT &end)):\
-			startV((VT*)malloc(sizeof(VT))), endV((VT*)malloc(sizeof(VT))),nexti(nexti), nextsize(nextsize), h(h)\
+			int (*h)(VT &now, VT &end), input *data):\
+			startV((VT*)malloc(sizeof(VT))), endV((VT*)malloc(sizeof(VT))),nexti(nexti), nextsize(nextsize), h(h), data((input*)malloc(sizeof(input)))\
 			{
 		log("Astar():");
 		memcpy(this->startV, &startV, sizeof(VT));
 		memcpy(this->endV, &endV, sizeof(VT));
-		state * s = this->startV;
+		memcpy(&this->data, &data, sizeof(input));
 
 		log("index,,%d",this->startV->car_FT.index[1]);
 		log("Astar() end\n");
@@ -54,7 +73,7 @@ public:
 		free(endV);
 	}
 
-	int findpath();
+	road findpath(turn *);
 	struct roadcmp{
 		bool operator()(const road & a, const road & b) const
 		{
@@ -76,37 +95,25 @@ public:
 
 //FUNCTION START
 template <typename VT>
-int Astar<VT>::findpath(){
-	printf("in findPath:\n");
 
+typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
+	log("in findPath:");
 	unordered_map<VT, int> dis;
 	unordered_set<VT> visit;
 //	priority_queue<road, vector<road>, Astar::roadcmp > q;
 	heap<road, Astar::roadcmp > q(1000000);
 
-	log("%p, index[1]=%d",this->startV, this->startV->car_FT.index[1]);
-	VT a(*startV);
-	log("1===%p, index[1]=%d",&a, a.car_FT.index[1]);
 	dis.insert(road(*startV, 0));
-
-	int jhja=0;
-	VT b(*startV);
-	log("2===%p, index[1]=%d",&b, b.car_FT.index[1]);
-	log("3===%p, index[1]=%d",&a, a.car_FT.index[1]);
-
 	q.push(road(*startV, 0));
-	log("4===%p, index[1]=%d",&a, a.car_FT.index[1]);
-
-	jhja=0;
 	road now, next;
+
 	int i;
 	while(!q.heapsize){
-
 		now = q.top(); q.pop();
 		log("inwhile: %p, index[1]%d",&now.first, now.first.car_FT.index[1]);
 		if(visit.find(now.first) != visit.end()) continue;
 		if(now.first == *endV){
-			return now.second;
+			return now;
 		}
 		visit.insert(now.first);
 
@@ -114,18 +121,29 @@ int Astar<VT>::findpath(){
 			next = nexti(now.first, i);
 			auto iter = dis.find(next.first);
 			if(iter==dis.end()){
+                int carnumber;
+                for(carnumber=0;carnumber<data->C;carnumber++){
+                    if(next.first.carT[carnumber]==next.first.nowT)
+                        break;
+                }
+                turn_data->link(carnumber, next.first.carFV[carnumber])=next.first.carV[carnumber];
 				dis.insert(road(next.first, now.second+next.second));
 				q.push(road(next.first, now.second+next.second+h(next.first, *endV)));
 			}else{
 				if(iter->second > now.second+next.second){
+				    int carnumber;
+                    for(carnumber=0;carnumber<data->C;carnumber++){
+                        if(next.first.carT[carnumber]==next.first.nowT)
+                            break;
+                    }
+                    turn_data->link(carnumber, next.first.carFV[carnumber])=next.first.carV[carnumber];
 					iter->second = now.second+next.second;
 					q.push(road(next.first, now.second+next.second+h(next.first, *endV)));
 				}
 			}
 		}
 	}
-	return -1;
+	return road(startV, -1);
 }
 //FUNCTION END
-
 #endif
