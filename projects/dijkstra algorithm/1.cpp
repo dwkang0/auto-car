@@ -30,8 +30,10 @@ int main()
     }
     state::data=data;
     Astar<state> astar = Astar<state>(Start_ST, End_ST, state::nexti, state::nextsize, state::h, data);
-    int time=astar.findpath();
-    printf("%d", time);
+
+    turn * turn_data=new turn(data->C, data->V);
+    Astar<state>::road result=astar.findpath(turn_data);
+    printf("%d", result.second);
     return 0;
 }
 

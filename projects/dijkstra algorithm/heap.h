@@ -74,7 +74,6 @@ public:
 		}
 	}
 	inline int push(const T &x){
-	    printf("");
 		heapsize++;
 		int now;
 		now = heapsize;

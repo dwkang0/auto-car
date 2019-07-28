@@ -23,6 +23,20 @@ using namespace std;
 
 //HEADER END
 
+struct turn{
+    int *data_link;
+    int V;
+    turn (int C, int V):\
+        data_link((int *)malloc(4*C*V)), V(V)\
+        {
+            memset(data_link, -1, sizeof(int)*C*V);
+        }
+
+    int &link(int i, int j){
+        return data_link[i*V+j];
+    }
+};
+
 //CLASS START
 template <typename VT>
 class Astar{
@@ -50,7 +64,7 @@ public:
 		free(&endV);
 	}
 
-	int findpath();
+	road findpath(turn *);
 	struct roadcmp{
 		bool operator()(const road & a, const road & b) const
 		{
@@ -72,7 +86,7 @@ public:
 
 //FUNCTION START
 template <typename VT>
-int Astar<VT>::findpath(){
+typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
 	unordered_map<VT, int> dis;
 	unordered_set<VT> visit;
 	priority_queue<road, vector<road>, Astar::roadcmp > q;
@@ -81,15 +95,13 @@ int Astar<VT>::findpath(){
 	q.push(road(startV, 0));
 	road now, next;
 
-    int data_link[data->C][data->V];
-	memset(data_link, -1, sizeof(int)*(data->C)*(data->V));
 	int i;
 	while(!q.empty()){
 		now = q.top(); q.pop();
-		printf("%d %d\n",now.first, now.second);
+		printf("%d\n", now.second);
 		if(visit.find(now.first) != visit.end()) continue;
 		if(now.first == endV){
-			return now.second;
+			return now;
 		}
 		visit.insert(now.first);
 
@@ -102,7 +114,7 @@ int Astar<VT>::findpath(){
                     if(next.first.carT[carnumber]==next.first.nowT)
                         break;
                 }
-                data_link[carnumber][next.first.carFV[carnumber]]=next.first.carV[carnumber];
+                turn_data->link(carnumber, next.first.carFV[carnumber])=next.first.carV[carnumber];
 				dis.insert(road(next.first, now.second+next.second));
 				q.push(road(next.first, now.second+next.second+h(next.first, endV)));
 			}else{
@@ -112,15 +124,14 @@ int Astar<VT>::findpath(){
                         if(next.first.carT[carnumber]==next.first.nowT)
                             break;
                     }
-                    data_link[carnumber][next.first.carFV[carnumber]]=next.first.carV[carnumber];
+                    turn_data->link(carnumber, next.first.carFV[carnumber])=next.first.carV[carnumber];
 					iter->second = now.second+next.second;
 					q.push(road(next.first, now.second+next.second+h(next.first, endV)));
 				}
 			}
 		}
 	}
-	return -1;
+	return road(startV, -1);
 }
 //FUNCTION END
-
 #endif
