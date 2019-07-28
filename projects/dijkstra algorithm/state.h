@@ -55,7 +55,7 @@ struct state{
     int nowT;
 
     static input * data;
-    state(int carN): \
+    state(int carN=0): \
     		nowT(0), carN(carN), car_FT(carN),\
 			carV(new int[carN]), carFV(new int[carN]), carT(new int[carN]){}
     ~state(){
@@ -67,6 +67,11 @@ struct state{
     static int h(state &now, state &end);
     static int nextsize(state &now);
     static Astar<state>::road & nexti(state &now, int i);
+
+    state & operator = (const state & b){
+        memcpy(this, &b, sizeof(state));
+    }
+    bool operator == (const state &b) const;
 };
 input* state::data;
 int state::h(state &now, state &end){
@@ -96,9 +101,9 @@ Astar<state>::road & state::nexti(state &now, int i){
     }
 
     state next(carnumber);
-    memcpy(next.car_FT.data+1, now.car_FT.data+1, sizeof(car_data)*now.car_FT.heapsize);
-    memcpy(next.car_FT.index+1, now.car_FT.index+1, sizeof(int)*now.car_FT.heapsize);
-    next.car_FT.heapsize=now.car_FT.heapsize;
+    //memcpy(next.car_FT.data+1, now.car_FT.data+1, sizeof(car_data)*now.car_FT.heapsize);
+    //memcpy(next.car_FT.index+1, now.car_FT.index+1, sizeof(int)*now.car_FT.heapsize);
+    //next.car_FT.heapsize=now.car_FT.heapsize;
     for(int car_n=0; car_n<data->C; car_n++){
         next.carV[car_n]=now.carV[car_n];
         next.carFV[car_n]=now.carFV[car_n];
@@ -137,15 +142,27 @@ template <>
 struct hash<state> {
 	size_t operator()(const state& s) const {//hash {v, fv, (t-ft.top())}
 		std::size_t h = 0;
+		unsigned int temp;
 		hashdata(h, s.carV, sizeof(int)*s.carN);	//hash v
 		hashdata(h, s.carFV, sizeof(int)*s.carN);	//hash fv
 		for(int i=0; i<s.carN; i++){				//hash (t-ft.top()
-			hashbyte(h, s.carT[i] - s.car_FT.top().car_FT);
+            temp = s.carT[i] - s.car_FT.top().car_FT;
+			hashbyte(h, temp&(0xff));
+			hashbyte(h, (temp&(0xff00))>>8);
+			hashbyte(h, (temp&(0xff0000))>>16);
+			hashbyte(h, (temp&(0xff000000))>24);
+
 		}
 		return h;
 	}
 };
 }  // namespace std
+
+bool state::operator == (const state &b) const{
+        hash<state> h;
+        return h(*this) == h(b);
+}
+
 //state::data=   ;
 
 #endif // _STATE_H_

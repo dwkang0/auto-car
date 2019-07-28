@@ -74,12 +74,13 @@ public:
 		}
 	}
 	inline int push(const T &x){
+	    printf("");
 		heapsize++;
 		int now;
 		now = heapsize;
 		data[now] = x;
 		index[now] = heapsize;
-		while(data[index[parent(now)]] < data[index[now]] && now>1){
+		while(now>1 && data[index[parent(now)]] < data[index[now]]){
 			heapfunc::swap(index[parent(now)], index[now]);
 		}
 		return heapsize;
@@ -109,7 +110,8 @@ public:
 		}
 	}
 	inline T top() const{
-		return data[index[1]];
+	    printf("index1 : %d, hsize: %d, maxsize:%d\n", index[1], heapsize, maxsize);
+		return !heapsize ? NULL : data[index[1]];
 	}
 };
 
