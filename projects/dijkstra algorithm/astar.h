@@ -38,8 +38,8 @@ public:
 			int (*h)(VT &now, VT &end)):\
 			startV(*(VT*)malloc(sizeof(VT))), endV(*(VT*)malloc(sizeof(VT))),nexti(nexti), nextsize(nextsize), h(h)\
 			{
-		this->startV = startV;
-		this->endV = endV;
+		memcpy(&this->startV, &startV, sizeof(VT));
+		memcpy(&this->endV, &endV, sizeof(VT));
 			}
 	~Astar(){
 		free(&startV);
