@@ -2,7 +2,10 @@
 #include "heap.h"
 #include "state.h"
 #include <stdio.h>
+#include <iostream>
 #include <vector>
+
+using namespace std;
 
 int V, E;
 vector<pair<int, int> > graph[1000];//pair(toNode, edgeLenth)
@@ -100,9 +103,9 @@ public:
 	void execute(){
 		input();
 
-//		Astar<int> astar = Astar<int>(sizeof(int), 1, 5, nexti, nextsize, h);
-		Astar<int> a2 = Astar<int>(sizeof(int), 1, 5, NULL, NULL, NULL);
-//		printf("%d", astar.findpath());
+		Astar<int> astar = Astar<int>(1, 5, nexti, nextsize, h);
+//		Astar<int> a2 = Astar<int>(1, 5, NULL, NULL, NULL);
+		printf("%d", astar.findpath());
 
 //		printf("%d", astar.findpath());
 //		printf("issame? %d", s1==s2);
@@ -124,5 +127,15 @@ int main(){
 //	printf("%d\n", a.top()); a.pop();
 //	printf("%d\n", a.top()); a.pop();
 //	printf("%d\n", a.top()); a.pop();
+
+//	state s(2);
+//	s.carV[0]=0; s.carV[1]=10;
+//	s.carFV[0]=1; s.carFV[1]=11;
+//	s.carT[0]=5; s.carT[1]=15;
+//	s.car_FT.push(15);
+//
+//	hash<state> h;
+//	cout<< h(s);
+
 
 }

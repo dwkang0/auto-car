@@ -27,20 +27,20 @@ public:
 	int heapsize;
 	const int maxsize;
 
-	inline int parent(int index){
+	inline int parent(const int index) const{
 		return index/2;
 	}
-	inline int leftc(int index){
+	inline int leftc(const int index) const{
 		return index*2;
 	}
-	inline int rightc(int index){
+	inline int rightc(const int index) const{
 		return index*2+1;
 	}
 
 //public:
 	heap(int maxsize):maxsize(maxsize), heapsize(0){
 		data = new T[maxsize+1];
-		index = new T[maxsize+1];
+		index = new int[maxsize+1];
 	}
 	~heap(){
 		delete data;
@@ -48,7 +48,7 @@ public:
 //		delete ditohi;
 //		delete hitodi;
 	}
-	inline void relax(int i){
+	inline void relax(const int i) const{
 		//up
 		while(data[index[parent(i)]] < data[index[i]] && i>1){
 			heapfunc::swap(index[parent(i)], index[i]);
@@ -88,7 +88,7 @@ public:
 			now=lrmax;
 		}
 	}
-	inline T top(){
+	inline T top() const{
 		return data[index[1]];
 	}
 };
