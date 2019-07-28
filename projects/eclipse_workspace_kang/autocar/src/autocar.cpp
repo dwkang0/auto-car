@@ -130,12 +130,12 @@ int main(){
 //	printf("%d\n", a.top()); a.pop();
 //	printf("%d\n", a.top()); a.pop();
 	heap<state::car_data> a(10);
-	a.push(state::car_data(7));
-	a.push(state::car_data(5));
-	a.push(state::car_data(10));
-	printf("%f\n", a.top().car_FT); a.pop();
-	printf("%f\n", a.top().car_FT); a.pop();
-	printf("%f\n", a.top().car_FT); a.pop();
+	a.push(state::car_data(7, 2));
+	a.push(state::car_data(5, 2));
+	a.push(state::car_data(10, 3));
+	printf("%d\n", a.top().car_FT); a.pop();
+	printf("%d\n", a.top().car_FT); a.pop();
+	printf("%d\n", a.top().car_FT); a.pop();
 
 //	state s(2);
 //	s.carV[0]=0; s.carV[1]=10;
