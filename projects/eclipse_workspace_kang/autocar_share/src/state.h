@@ -1,3 +1,8 @@
+/*
+ * 아이디어: 가중치(cost) 혹은 h 함수에 차의 원래 최단경로에서 떨어진 정도를 넣는다. 혹은..:
+ * 설명: s->x->e일 때, x를 거치는 최단 경로를 계산한다. (s->x)+(x->e) 이 것을 가중치로 사용할 수도 있다.
+ */
+
 #ifndef _STATE_H_
 #define _STATE_H_
 
@@ -36,6 +41,16 @@ inline void hashdata(std::size_t &h, void * data, size_t size){
 using namespace statefunc;
 
 struct state{
+	void printstate(){
+		printf("====state====\n");
+		for(int i=0; i<carN; i++){
+			printf("car %d| %d -> %d (%ds)\n",i+1, carV[i], carFV[i], car_FT.data[car_FT.index[i+1]].car_FT);
+		}
+		printf("n:%d\n",car_FT.index[1]);
+		log("%d %d %d",car_FT.data[car_FT.index[1]].car_FT, car_FT.data[car_FT.index[2]].car_FT, car_FT.data[car_FT.index[3]].car_FT);
+		printf("============\n\n");
+	}
+
 	struct car_data{
 		int car_FT;
 		int car_n;
@@ -95,7 +110,7 @@ struct state{
 	static Astar<state>::road & nexti(state &now, int i);
 
 	state & operator = (const state & b){
-		destruction();
+		//destruction();
 		nowT=b.nowT;
 		carN=b.carN;
 		car_FT.data = new car_data[b.carN+1];
@@ -125,7 +140,7 @@ int state::h(state &now, state &end){
 int state::nextsize(state &now){
 	car_data a;
 	a=now.car_FT.top();
-	log("%d, %d][][]", now.carFV[a.car_n], a.car_n);
+	log("nextsize: %d, %d => %d", now.carFV[a.car_n], a.car_n, data->g[now.carFV[a.car_n]].size());
 	int number=data->g[now.carFV[a.car_n]].size();
 	return number;
 }
@@ -172,11 +187,12 @@ Astar<state>::road & state::nexti(state &now, int i){
 			}
 		}
 	}
-	next.car_FT.data[a.car_n+1].car_FT+=flowtime2;
-
-	Astar<state>::road todis(next, flowtime2);
+	next.car_FT.data[now.car_FT.index[1]].car_FT+=flowtime2;//TODO: [a.car_n+1]에서 변경함
+	next.car_FT.relax(1);//TODO: 추가함
+	log("%d %d %d",next.car_FT.data[1].car_FT, next.car_FT.data[2].car_FT, next.car_FT.data[3].car_FT);
+	Astar<state>::road *todis = new Astar<state>::road(next, flowtime2);//TODO: 포인터로 바뀐 거 적용
 	log("nexti end");
-	return todis;
+	return *todis;
 }
 namespace std {
 template <>
@@ -185,11 +201,11 @@ struct hash<state> {
 		printf("hash:\n");
 		std::size_t h = 0;
 		unsigned int temp, t2;
+		t2=s.car_FT.top().car_FT;
 		hashdata(h, s.carV, sizeof(int)*s.carN);	//hash v
 		hashdata(h, s.carFV, sizeof(int)*s.carN);	//hash fv
 		for(int i=0; i<s.carN; i++){				//hash (t-ft.top()
 			temp = s.carT[i];
-			int t2=s.car_FT.top().car_FT;
 			temp-=t2;
 			//            s.car_FT.top();
 			hashbyte(h, temp&(0xff));

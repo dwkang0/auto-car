@@ -16,6 +16,9 @@
 #include <iostream>
 #include <algorithm>
 
+#include "log.h"
+class state;
+
 using namespace std;
 
 //HEADER END
@@ -26,24 +29,29 @@ class Astar{
 public:
 	typedef pair<VT, int> road; // first: to, second: cost
 
-	VT &startV;
-	VT &endV;
+	VT *startV;
+	VT *endV;
 
 	int (*nextsize)(VT &now);
 	road& (*nexti)(VT &now, int i);
 	int (*h)(VT &now, VT &end);
 
-	Astar(VT startV, VT endV, \
+	Astar(VT &startV, VT &endV, \
 			road& (*nexti)(VT &now, int i),int (*nextsize)(VT &now), \
 			int (*h)(VT &now, VT &end)):\
-			startV(*(VT*)malloc(sizeof(VT))), endV(*(VT*)malloc(sizeof(VT))),nexti(nexti), nextsize(nextsize), h(h)\
+			startV((VT*)malloc(sizeof(VT))), endV((VT*)malloc(sizeof(VT))),nexti(nexti), nextsize(nextsize), h(h)\
 			{
-		memcpy(&this->startV, &startV, sizeof(VT));
-		memcpy(&this->endV, &endV, sizeof(VT));
+		log("Astar():");
+		memcpy(this->startV, &startV, sizeof(VT));
+		memcpy(this->endV, &endV, sizeof(VT));
+		state * s = this->startV;
+
+		log("index,,%d",this->startV->car_FT.index[1]);
+		log("Astar() end\n");
 			}
 	~Astar(){
-		free(&startV);
-		free(&endV);
+		free(startV);
+		free(endV);
 	}
 
 	int findpath();
@@ -69,19 +77,34 @@ public:
 //FUNCTION START
 template <typename VT>
 int Astar<VT>::findpath(){
+	printf("in findPath:\n");
+
 	unordered_map<VT, int> dis;
 	unordered_set<VT> visit;
 	priority_queue<road, vector<road>, Astar::roadcmp > q;
 
-	dis.insert(road(startV, 0));
-	q.push(road(startV, 0));
+	log("%p, index[1]=%d",this->startV, this->startV->car_FT.index[1]);
+	VT a(*startV);
+	log("1===%p, index[1]=%d",&a, a.car_FT.index[1]);
+	dis.insert(road(*startV, 0));
 
+	int jhja=0;
+	VT b(*startV);
+	log("2===%p, index[1]=%d",&b, b.car_FT.index[1]);
+	log("3===%p, index[1]=%d",&a, a.car_FT.index[1]);
+
+	q.push(road(*startV, 0));
+	log("4===%p, index[1]=%d",&a, a.car_FT.index[1]);
+
+	jhja=0;
 	road now, next;
 	int i;
 	while(!q.empty()){
+
 		now = q.top(); q.pop();
+		log("inwhile: %p, index[1]%d",&now.first, now.first.car_FT.index[1]);
 		if(visit.find(now.first) != visit.end()) continue;
-		if(now.first == endV){
+		if(now.first == *endV){
 			return now.second;
 		}
 		visit.insert(now.first);
@@ -91,11 +114,11 @@ int Astar<VT>::findpath(){
 			auto iter = dis.find(next.first);
 			if(iter==dis.end()){
 				dis.insert(road(next.first, now.second+next.second));
-				q.push(road(next.first, now.second+next.second+h(next.first, endV)));
+				q.push(road(next.first, now.second+next.second+h(next.first, *endV)));
 			}else{
 				if(iter->second > now.second+next.second){
 					iter->second = now.second+next.second;
-					q.push(road(next.first, now.second+next.second+h(next.first, endV)));
+					q.push(road(next.first, now.second+next.second+h(next.first, *endV)));
 				}
 			}
 		}

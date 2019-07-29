@@ -84,26 +84,18 @@ int Astar<VT>::findpath(){
 //	priority_queue<road, vector<road>, Astar::roadcmp > q;
 	heap<road, Astar::roadcmp > q(1000000);
 
-	log("%p, index[1]=%d",this->startV, this->startV->car_FT.index[1]);
-	VT a(*startV);
-	log("1===%p, index[1]=%d",&a, a.car_FT.index[1]);
 	dis.insert(road(*startV, 0));
 
-	int jhja=0;
 	VT b(*startV);
-	log("2===%p, index[1]=%d",&b, b.car_FT.index[1]);
-	log("3===%p, index[1]=%d",&a, a.car_FT.index[1]);
-
 	q.push(road(*startV, 0));
-	log("4===%p, index[1]=%d",&a, a.car_FT.index[1]);
 
-	jhja=0;
 	road now, next;
 	int i;
-	while(!q.heapsize){
+	while(q.heapsize){
 
 		now = q.top(); q.pop();
-		log("inwhile: %p, index[1]%d",&now.first, now.first.car_FT.index[1]);
+		log("inwhile: %p, points:%d",&now.first, now.second);
+		now.first.printstate();
 		if(visit.find(now.first) != visit.end()) continue;
 		if(now.first == *endV){
 			return now.second;

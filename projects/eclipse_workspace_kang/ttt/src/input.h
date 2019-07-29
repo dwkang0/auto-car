@@ -46,17 +46,17 @@ input * file_output(){
 	fp=fopen("road.txt", "rt");
 	if (fp!=NULL) {}
 	else {
-		puts("\C6\C4\C0\CF \BF\C0\C7\C2 \BD\C7\C6\D0\n");
+		puts("파일을 찾을 수 없습니다.\n");
 		return 0;
 	}
 
     input * data=(input *)malloc(sizeof(input));
 
-    int V; //\B1\B3\C2\F7\B7\CE \B0\B3\BC\F6
+    int V=9; //������ ����
     fscanf(fp, "%d", &V);   data->V=V;
-    int E; //\C0\CE\C1\A2\B8\AE\BD\BAƮ \BC\F6
+    int E; //��������Ʈ ��
     fscanf(fp, "%d", &E);   data->E=E;
-    int C; //\C2\F7 \BC\F6
+    int C; //�� ��
     fscanf(fp, "%d", &C);   data->C=C;
 
     data->data_v=(int *)malloc(4*V*2);
@@ -67,16 +67,18 @@ input * file_output(){
     int (* data_c2)[2]=(int (*)[2])data->data_c;
 
 	for(int i=0;i<V;i++){
-        fscanf(fp, "%*d %d %d", &data_v2[i][0], &data_v2[i][1]);//i\B9\F8\A4\8A \C1\A1\C0\C7 \C1\C2ǥ(x,y)
+        fscanf(fp, "%*d %d %d", &data_v2[i][0], &data_v2[i][1]);//i���� ���� ��ǥ(x,y)
         if (feof(fp))
             break;
 	}
 
 	for(int i=0;i<C;i++){
-        fscanf(fp, "%*d %d %d %f", &data_c2[i][0], &data_c2[i][1], &data->c_speed[i]);//i\B9\F8° \C2\F7 : (0)\C1\A1\BF\A1\BC\AD (1)\C1\A1\C0\B8\B7\CE \C0̵\BF
+        fscanf(fp, "%*d %d %d %f", &data_c2[i][0], &data_c2[i][1], &data->c_speed[i]);//i��° �� : (0)������ (1)������ �̵�
         if(feof(fp))
             break;
 	}
+
+	vector<int> * g = new vector<int>[3];
     data->g = new vector<edge>[V];
 	int k1, k2; double dis_p2p;
 	for(int i=0;i<E;i++){
@@ -88,7 +90,7 @@ input * file_output(){
 	fclose(fp);
     data->v_xy=(int (*)[2])data->data_v;
     data->car_road=(int (*)[2])data->data_c;
-	//\C6\C4\C0\CF \C1\A4\BA\B8 \C2\FC\C1\B6
+	//���� ���� ����
 	return data;
 }
 
