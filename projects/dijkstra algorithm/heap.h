@@ -76,7 +76,7 @@ public:
 //		printf("asd,%d][]",i);
 		while(rightc(i) <= heapsize){
 //			printf("asd");
-			if( cp(data[leftc(i)] , data[rightc(i)]) ){
+			if( cp(data[index[leftc(i)]] , data[index[rightc(i)]]) ){
 				lrmax=rightc(i);
 			}else lrmax=leftc(i);
 			if(cp(data[index[lrmax]] , data[index[i]])) break;
@@ -105,12 +105,13 @@ public:
 //		printf("now:%d, dindex:%d\n",now, dindex);
 		data[dindex] = x;
 		index[now] = dindex;
-//		log("now:%d, index[now]:%d, data[now]:%d",now, index[now],data[index[now]]);
+		log("now:%d, index[now]:%d, data[now]:%d",now, index[now],data[index[now]]);
 //		log("%d < %d?",data[index[parent(now)]], data[index[now]]);
 		while(now>1 && cp(data[index[parent(now)]] , data[index[now]])){
-//			log("index[now]:%d",index[now]);
+			log("index[now]:%d",index[now]);
 			heapfunc::swap(index[parent(now)], index[now]);
 			now = parent(now);
+			log("%d < %d?",data[index[parent(now)]], data[index[now]]);
 		}
 		log("push end\n");
 		return heapsize;
@@ -125,7 +126,7 @@ public:
 		int lrmax;
 		while(rightc(now) <= heapsize){
 //			printf("now=%d\n",now);
-			if( cp(data[leftc(index[now])] , data[rightc(index[now])]) ){
+			if( cp(data[index[leftc(now)]] , data[index[rightc(now)]]) ){
 				lrmax=rightc(now);
 			}else lrmax=leftc(now);
 //			printf("goto=>%d\n",lrmax);
