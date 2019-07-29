@@ -159,22 +159,7 @@ log("nexti:");
     }
 
     state next(carnumber);
-//    next.deep_copy(now);
-    memcpy(next.car_FT.data+1, now.car_FT.data+1, sizeof(car_data)*now.car_FT.heapsize);
-    memcpy(next.car_FT.index+1, now.car_FT.index+1, sizeof(int)*now.car_FT.heapsize);
-	int h = now.car_FT.qhead, t = now.car_FT.qtail;
-	if(h < t){
-		memcpy(next.car_FT.nextq+h,now.car_FT.nextq+h, sizeof(int)*(t-h));
-	}else{
-		memcpy(next.car_FT.nextq, now.car_FT.nextq, sizeof(int)*(t));
-		memcpy(next.car_FT.nextq+h,now.car_FT.nextq+h, sizeof(int)*(now.car_FT.maxsize+1-h));
-	}
-    next.car_FT.heapsize=now.car_FT.heapsize;
-    for(int car_n=0; car_n<data->C; car_n++){
-        next.carV[car_n]=now.carV[car_n];
-        next.carFV[car_n]=now.carFV[car_n];
-        next.carT[car_n]=now.carT[car_n];
-    }
+    next.deep_copy(now);
 
     next.carV[a.car_n]=now.carFV[a.car_n];
     next.carFV[a.car_n]=flowV;
@@ -202,11 +187,13 @@ log("nexti:");
         next.car_FT.data[now.car_FT.index[1]].car_FT+=flowtime2;
         next.car_FT.relax(1);
     }
-    log("nexi : %d ", flowtime2);
+    int returntime=(next.nowT-now.nowT);
+    log("nexi : %d ", returntime);
     log("%d", next.carN);
-    log("%d", next.carV[1]);
-    log("%d", next.carV[2]);
-    Astar<state>::road *todis=new Astar<state>::road(next, flowtime2);
+    log("%d %d", next.carV[0], next.carFV[0]);
+    log("%d %d", next.carV[1], next.carFV[1]);
+    log("%d %d", next.carV[2], next.carFV[2]);
+    Astar<state>::road *todis=new Astar<state>::road(next, returntime);
 log("nexti end");
     return *todis;
 }
