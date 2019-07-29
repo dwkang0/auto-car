@@ -39,7 +39,7 @@ struct state{
     void printstate(){
 		printf("====state====\n");
 		for(int i=0; i<carN; i++){
-			printf("car %d| %d -> %d (%ds)\n",i+1, carV[i], carFV[i], car_FT.data[i+1].car_FT);
+			printf("car %d| %d -> %d (%ds -> %ds)\n",i+1, carV[i], carFV[i], carT[i], car_FT.data[i+1].car_FT);
 		}
 		printf("Time : %d\n", nowT);
 		printf("n:%d\n",car_FT.index[1]);
@@ -206,8 +206,9 @@ log("nexti:");
     int returntime=(next.nowT-now.nowT);
     log("nexi : %d ", returntime);
     log("%d", next.carN);
-    log("%d", next.carV[1]);
-    log("%d", next.carV[2]);
+    log("%d %d", next.carV[0], next.carFV[0]);
+    log("%d %d", next.carV[1], next.carFV[1]);
+    log("%d %d", next.carV[2], next.carFV[2]);
     Astar<state>::road *todis=new Astar<state>::road(next, returntime);
 log("nexti end");
     return *todis;
