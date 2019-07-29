@@ -149,6 +149,12 @@ END:
 	printf("%d %d %d\n", now.car_FT.data[1].car_FT, now.car_FT.data[2].car_FT, now.car_FT.data[3].car_FT);
 	printf("%d   %d\n", a.car_n, a.car_FT);
 	if(a.car_FT==INF){
+	    for(int i=0;i<data->C;i++){
+            now.car_FT.data[i+1].car_FT=now.carT[i];
+            if(now.nowT<now.carT[i]){
+                now.nowT=now.carT[i];
+            }
+	    }
         return 0;
 	}
 	if(now.carFV[a.car_n]==data->car_road[a.car_n][1]){

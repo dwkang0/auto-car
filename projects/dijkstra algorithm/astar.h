@@ -115,8 +115,9 @@ typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
 		log("inwhile: %p, index[1]: %d",&now.first, now.first.car_FT.index[1]);
 		if(visit.find(now.first) != visit.end()) continue;
 		if(nextsize(now.first)==0){
-//		if(now.first == *endV){
-			VT nowVt = *endV;
+//		if(now.first == *endV){////////////todo
+            now.second=now.first.nowT;
+			VT nowVt = now.first;
 			printf("result:\n");
 			while(!(nowVt == *startV)){
 				nowVt.printstate();

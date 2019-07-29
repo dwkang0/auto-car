@@ -22,7 +22,6 @@ int main()
 	//    printf("dd");
 	state Start_ST(data->C), End_ST(data->C);
 
-	End_ST.carN=0;
 	End_ST.nowT=INF;
 	//    printf("asd");
 
@@ -60,11 +59,11 @@ int main()
                 break;
             }
         }
-        printf("차 %d 이동경로 :\n");
+        //printf("차 %d 이동경로 :\n");
         for(int i=0;i<linking[c]+1;i++){
-            printf("%d ", linkingdata[c][linking[c]-i-1]);
+            //printf("%d ", linkingdata[c][linking[c]-i-1]);
         }
-        printf("\n이동 시간 : %d", result.first.carT[c]);
+        //printf("\n이동 시간 : %d", result.first.carT[c]);
     }
     printf("%d", result.second);
 
