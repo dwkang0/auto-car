@@ -130,6 +130,7 @@ typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
                     if(next.first.carT[carnumber]==next.first.nowT)
                         break;
                 }
+                log("hojun debug %d %d %d %d %d",next.first.nowT ,data->C, carnumber, next.first.carV[carnumber], next.first.carFV[carnumber]);
                 turn_data->link(carnumber, next.first.carFV[carnumber])=next.first.carV[carnumber];
 				dis.insert(road(next.first, now.second+next.second));
 				q.push(road(next.first, now.second+next.second+h(next.first, *endV)));
