@@ -117,6 +117,7 @@ typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
 			return now;
 		}
         now.first.printstate();
+        printf("point:%d\n", now.second);
 		visit.insert(now.first);
 
 		for(i=0; i<nextsize(now.first); i++){
