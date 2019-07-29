@@ -36,6 +36,16 @@ inline void hashdata(std::size_t &h, void * data, size_t size){
 using namespace statefunc;
 
 struct state{
+    void printstate(){
+		printf("====state====\n");
+		for(int i=0; i<carN; i++){
+			printf("car %d| %d -> %d (%ds)\n",i+1, carV[i], carFV[i], car_FT.data[i+1].car_FT);
+		}
+		printf("n:%d\n",car_FT.index[1]);
+		log("%d %d %d",car_FT.data[car_FT.index[1]].car_FT, car_FT.data[car_FT.index[2]].car_FT, car_FT.data[car_FT.index[3]].car_FT);
+		printf("============\n\n");
+	}
+
 	struct car_data{
 		int car_FT;
 		int car_n;
@@ -174,10 +184,15 @@ log("nexti:");
             }
         }
         next.car_FT.data[a.car_n+1].car_FT+=flowtime2;
+        next.car_FT.relax(1);
     }
-    Astar<state>::road todis(next, flowtime2);
+    log("nexi : %d ", flowtime2);
+    log("%d", next.carN);
+    log("%d", next.carV[1]);
+    log("%d", next.carV[2]);
+    Astar<state>::road *todis=new Astar<state>::road(next, flowtime2);
 log("nexti end");
-    return todis;
+    return *todis;
 }
 namespace std {
 template <>

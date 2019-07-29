@@ -69,7 +69,7 @@ public:
 			if( cp(data[leftc(i)] , data[rightc(i)]) ){
 				lrmax=rightc(i);
 			}else lrmax=leftc(i);
-			if(!cp(data[index[lrmax]] , data[index[i]])) break;
+			if(cp(data[index[lrmax]] , data[index[i]])) break;
 			heapfunc::swap(index[i], index[lrmax]);
 			i=lrmax;
 		}
@@ -108,7 +108,7 @@ public:
 				lrmax=rightc(now);
 			}else lrmax=leftc(now);
 //			printf("goto=>%d\n",lrmax);
-			if(!cp(data[index[lrmax]] , data[index[now]])) break;
+			if(cp(data[index[lrmax]] , data[index[now]])) break;
 			heapfunc::swap(index[now], index[lrmax]);
 			now=lrmax;
 		}

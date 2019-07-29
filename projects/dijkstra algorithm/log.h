@@ -11,7 +11,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#define USELOG
+//#define USELOG
 
 inline void log(const char *format, ...){
 #ifdef USELOG
