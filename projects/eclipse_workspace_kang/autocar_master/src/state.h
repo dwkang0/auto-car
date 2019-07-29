@@ -217,19 +217,19 @@ struct hash<state> {
 //		printf("hash:\n");
 		std::size_t h = 0;
 		unsigned int temp, t2;
-		hashdata(h, s.carV, sizeof(int)*s.carN);	//hash v
+//		hashdata(h, s.carV, sizeof(int)*s.carN);	//hash v
 		hashdata(h, s.carFV, sizeof(int)*s.carN);	//hash fv
-		for(int i=0; i<s.carN; i++){				//hash (t-ft.top()
-			temp = s.carT[i];
-			int t2=s.car_FT.top().car_FT;
-			temp-=t2;
-			//            s.car_FT.top();
-			hashbyte(h, temp&(0xff));
-			hashbyte(h, (temp&(0xff00))>>8);
-			hashbyte(h, (temp&(0xff0000))>>16);
-			hashbyte(h, (temp&(0xff000000))>24);
-
-		}
+//		for(int i=0; i<s.carN; i++){				//hash (t-ft.top()
+//			temp = s.carT[i];
+//			int t2=s.car_FT.top().car_FT;
+//			temp-=t2;
+//			//            s.car_FT.top();
+//			hashbyte(h, temp&(0xff));
+//			hashbyte(h, (temp&(0xff00))>>8);
+//			hashbyte(h, (temp&(0xff0000))>>16);
+//			hashbyte(h, (temp&(0xff000000))>24);
+//
+//		}
 //		printf("hash end\n\n");
 		return h;
 	}
