@@ -118,7 +118,7 @@ typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
 //		if(now.first == *endV){////////////todo
             now.second=now.first.nowT;
 			VT nowVt = now.first;
-			printf("result:\n");
+			printf("\n\n\n\nresult:\n");
 			while(!(nowVt == *startV)){
 				nowVt.printstate();
 				nowVt = path_before.find(nowVt)->second;
@@ -126,7 +126,7 @@ typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
 
 			return now;
 		}
-		printf("\n\n\n\n");
+		log("\n\n\n\n");
         now.first.printstate();
         printf("point:%d\n", now.second);
 		visit.insert(now.first);

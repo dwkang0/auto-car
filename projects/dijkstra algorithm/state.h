@@ -145,9 +145,9 @@ int state::nextsize(state &now){
 END:
 	car_data a;
 	a=now.car_FT.top();
-	printf("%d %d %d\n", now.car_FT.data[now.car_FT.index[1]].car_FT, now.car_FT.data[now.car_FT.index[2]].car_FT, now.car_FT.data[now.car_FT.index[3]].car_FT);
-	printf("%d %d %d\n", now.car_FT.data[1].car_FT, now.car_FT.data[2].car_FT, now.car_FT.data[3].car_FT);
-	printf("%d   %d\n", a.car_n, a.car_FT);
+	log("%d %d %d\n", now.car_FT.data[now.car_FT.index[1]].car_FT, now.car_FT.data[now.car_FT.index[2]].car_FT, now.car_FT.data[now.car_FT.index[3]].car_FT);
+	log("%d %d %d\n", now.car_FT.data[1].car_FT, now.car_FT.data[2].car_FT, now.car_FT.data[3].car_FT);
+	log("%d   %d\n", a.car_n, a.car_FT);
 	if(a.car_FT==INF){
 	    for(int i=0;i<data->C;i++){
             now.car_FT.data[i+1].car_FT=now.carT[i];
@@ -169,7 +169,7 @@ END:
 	return number;
 }
 Astar<state>::road & state::nexti(state &now, int i){
-log("nexti:");
+    log("nexti:");
     car_data a=now.car_FT.top();
     edge FuV=data->g[now.carFV[a.car_n]][i];
     int flowV=FuV.to;
@@ -205,7 +205,9 @@ log("nexti:");
             if(next.carV[car_n]==next.carV[a.car_n]){
                 if(next.carFV[car_n]==next.carFV[a.car_n]){
                     if(next.car_FT.data[car_n+1].car_FT>next.carT[a.car_n]+flowtime2){
-                        flowtime2=next.car_FT.data[car_n+1].car_FT-next.carT[a.car_n];
+                        if(next.carT[next.car_FT.data[car_n+1].car_n]<next.carT[a.car_n]){
+                            flowtime2=next.car_FT.data[car_n+1].car_FT-next.carT[a.car_n];
+                        }
                     }
                 }
             }
