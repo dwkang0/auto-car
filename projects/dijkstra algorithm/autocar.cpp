@@ -47,9 +47,26 @@ int main()
 	Astar<state> astar = Astar<state>(Start_ST, End_ST, state::nexti, state::nextsize, state::h, data);
 //	log("%p| start_ST.index... :%d\n",&Start_ST, Start_ST.car_FT.index[1]);
 
-    	turn * turn_data=new turn(data->C, data->V);
-    	Astar<state>::road result=astar.findpath(turn_data);
-    	printf("%d", result.second);
+    turn * turn_data=new turn(data->C, data->V);
+    Astar<state>::road result=astar.findpath(turn_data);
+    int linkingdata[data->C][data->V];
+    int linking[data->C];
+    for(int c=0;c<data->C;c++){
+        linkingdata[c][0]=data->car_road[c][1];
+        for(int i=1;i<data->V;i++){
+            linkingdata[c][i]=turn_data->link(c, linkingdata[c][i-1]);
+            if(linkingdata[c][i]==data->car_road[c][0]){
+                linking[c]=i+1;
+                break;
+            }
+        }
+        printf("차 %d 이동경로 :\n");
+        for(int i=0;i<linking[c]+1;i++){
+            printf("%d ", linkingdata[c][linking[c]-i-1]);
+        }
+        printf("\n이동 시간 : %d", result.first.carT[c]);
+    }
+    printf("%d", result.second);
 
 	log("endProgram");
 	return 0;
