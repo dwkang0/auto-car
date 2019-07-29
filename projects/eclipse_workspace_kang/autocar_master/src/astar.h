@@ -113,10 +113,10 @@ typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
 		now = q.top(); q.pop();
 		log("inwhile: %p, index[1]: %d",&now.first, now.first.car_FT.index[1]);
 		if(visit.find(now.first) != visit.end()) continue;
+		now.first.printstate();
 		if(now.first == *endV){
 			return now;
 		}
-        now.first.printstate();
         printf("point:%d\n", now.second);
 		visit.insert(now.first);
 		now.second = dis.find(now.first)->second;

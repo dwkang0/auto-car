@@ -38,8 +38,15 @@ using namespace statefunc;
 struct state{
 	void printstate(){
 		printf("====state====\n");
-		for(int i=0; i<carN; i++){
-			printf("car %d| %d -> %d (%ds)\n",i+1, carV[i], carFV[i], car_FT.data[i+1].car_FT);
+//		for(int i=0; i<carN; i++){
+//			printf("car %d| %d -> %d (%ds)\n",i+1, carV[i], carFV[i], car_FT.data[i+1].car_FT);
+//		}
+		for(int i=1; i<=car_FT.heapsize; i++){
+			printf("car %d| %d -> %d (%ds)\n",\
+					car_FT.data[car_FT.index[i]].car_n,\
+					carV[car_FT.data[car_FT.index[i]].car_n],\
+					carFV[car_FT.data[car_FT.index[i]].car_n],\
+					car_FT.data[car_FT.index[i]].car_FT);
 		}
 		printf("Time : %d\n", nowT);
 		printf("n:%d\n",car_FT.index[1]);
@@ -75,8 +82,8 @@ struct state{
 		delete car_FT.data;
 	}
 	void deep_copy(const state &from){//보통은 destroction, 메모리 할당 필요
-		memcpy(this->car_FT.data+1, from.car_FT.data+1, sizeof(car_data)*(from.car_FT.heapsize));
-		memcpy(this->car_FT.index+1, from.car_FT.index+1, sizeof(int)*(from.car_FT.heapsize));
+		memcpy(this->car_FT.data+1, from.car_FT.data+1, sizeof(car_data)*(from.car_FT.maxsize));
+		memcpy(this->car_FT.index+1, from.car_FT.index+1, sizeof(int)*(from.car_FT.maxsize));
 		int h = from.car_FT.qhead, t = from.car_FT.qtail;
 		if(h < t){
 			memcpy(this->car_FT.nextq+h,from.car_FT.nextq+h, sizeof(int)*(t-h));
@@ -97,8 +104,8 @@ struct state{
 		this->nowT = from.nowT;
 	}
 	state(const state &s):\
-			nowT(s.nowT), carN(s.carN), car_FT(s.carN),\
-			carV(new int[s.carN]), carFV(new int[s.carN]), carT(new int[s.carN]) {
+			nowT(s.nowT), carN(s.carN), car_FT(s.car_FT.maxsize),\
+			carV(new int[s.car_FT.maxsize]), carFV(new int[s.car_FT.maxsize]), carT(new int[s.car_FT.maxsize]) {
 		deep_copy(s);
 	}
 	state(int carN=0): \
@@ -117,12 +124,12 @@ struct state{
 	state & operator = (const state & b){
 		destruction();
 		///메모리 할당
-		car_FT.data = new car_data[b.carN+1];
-		car_FT.index = new int[b.carN+1];
-		car_FT.nextq = new int[b.carN+1];
-		carV =new int[b.carN];
-		carFV =new int[b.carN];
-		carT =new int[b.carN];
+		car_FT.data = new car_data[b.car_FT.maxsize+1];
+		car_FT.index = new int[b.car_FT.maxsize+1];
+		car_FT.nextq = new int[b.car_FT.maxsize+1];
+		carV =new int[b.car_FT.maxsize];
+		carFV =new int[b.car_FT.maxsize];
+		carT =new int[b.car_FT.maxsize];
 		///메모리 할당 끝
 		deep_copy(b);
 		//		memcpy(this, &b, sizeof(state));
