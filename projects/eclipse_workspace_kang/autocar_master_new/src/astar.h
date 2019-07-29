@@ -162,6 +162,7 @@ typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
 		}
 	}
 
+
 	return road(*startV, -1);
 }
 //FUNCTION END
