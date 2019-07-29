@@ -1,4 +1,4 @@
-#ifndef _STATE_H_
+﻿#ifndef _STATE_H_
 #define _STATE_H_
 
 //HEADER START
@@ -41,6 +41,7 @@ struct state{
 		for(int i=0; i<carN; i++){
 			printf("car %d| %d -> %d (%ds)\n",i+1, carV[i], carFV[i], car_FT.data[i+1].car_FT);
 		}
+		printf("Time : %d\n", nowT);
 		printf("n:%d\n",car_FT.index[1]);
 //		log("%d %d %d",car_FT.data[car_FT.index[1]].car_FT, car_FT.data[car_FT.index[2]].car_FT, car_FT.data[car_FT.index[3]].car_FT);
 		printf("============\n\n");
@@ -202,11 +203,12 @@ log("nexti:");
         next.car_FT.data[now.car_FT.index[1]].car_FT+=flowtime2;
         next.car_FT.relax(1);
     }
-    log("nexi : %d ", flowtime2);
+    int returntime=(next.nowT-now.nowT);
+    log("nexi : %d ", returntime);
     log("%d", next.carN);
     log("%d", next.carV[1]);
     log("%d", next.carV[2]);
-    Astar<state>::road *todis=new Astar<state>::road(next, flowtime2);
+    Astar<state>::road *todis=new Astar<state>::road(next, returntime);
 log("nexti end");
     return *todis;
 }
@@ -217,19 +219,19 @@ struct hash<state> {
 //		printf("hash:\n");
 		std::size_t h = 0;
 		unsigned int temp, t2;
-		hashdata(h, s.carV, sizeof(int)*s.carN);	//hash v
+//		hashdata(h, s.carV, sizeof(int)*s.carN);	//hash v
 		hashdata(h, s.carFV, sizeof(int)*s.carN);	//hash fv
-		for(int i=0; i<s.carN; i++){				//hash (t-ft.top()
-			temp = s.carT[i];
-			int t2=s.car_FT.top().car_FT;
-			temp-=t2;
-			//            s.car_FT.top();
-			hashbyte(h, temp&(0xff));
-			hashbyte(h, (temp&(0xff00))>>8);
-			hashbyte(h, (temp&(0xff0000))>>16);
-			hashbyte(h, (temp&(0xff000000))>24);
-
-		}
+//		for(int i=0; i<s.carN; i++){				//hash (t-ft.top()
+//			temp = s.carT[i];
+//			int t2=s.car_FT.top().car_FT;
+//			temp-=t2;
+//			//            s.car_FT.top();
+//			hashbyte(h, temp&(0xff));
+//			hashbyte(h, (temp&(0xff00))>>8);
+//			hashbyte(h, (temp&(0xff0000))>>16);
+//			hashbyte(h, (temp&(0xff000000))>24);
+//
+//		}
 //		printf("hash end\n\n");
 		return h;
 	}
