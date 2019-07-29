@@ -34,22 +34,23 @@ int main()
 		End_ST.carFV[car_n]=data->car_road[car_n][1];
 	}
 	log("start.index[1]:%d", Start_ST.car_FT.index[1]);
-//	log("%p,%p,%p,%p",&Start_ST.car_FT.index, &Start_ST, &End_ST.car_FT.index, &End_ST);
-//	log("size:%d",sizeof(state));
-//	log("%p| start_ST.index... :%p",&Start_ST, &Start_ST.car_FT.index);
+	//	log("%p,%p,%p,%p",&Start_ST.car_FT.index, &Start_ST, &End_ST.car_FT.index, &End_ST);
+	//	log("size:%d",sizeof(state));
+	//	log("%p| start_ST.index... :%p",&Start_ST, &Start_ST.car_FT.index);
 
 	state::data=data;
 
-//	log("%p| start_ST.index... :%d\n",&Start_ST, Start_ST.car_FT.index[1]);
-//	log("%p| start_ST.index... :%d\n",&Start_ST, Start_ST.car_FT.index[1]);
-//	log("%p| size:%d, carN:%d, index,,%d\n",index,sizeof(state), s->carN, Start_ST.car_FT.index[1]);
+	//	log("%p| start_ST.index... :%d\n",&Start_ST, Start_ST.car_FT.index[1]);
+	//	log("%p| start_ST.index... :%d\n",&Start_ST, Start_ST.car_FT.index[1]);
+	//	log("%p| size:%d, carN:%d, index,,%d\n",index,sizeof(state), s->carN, Start_ST.car_FT.index[1]);
 
 	Astar<state> astar = Astar<state>(Start_ST, End_ST, state::nexti, state::nextsize, state::h, data);
-//	log("%p| start_ST.index... :%d\n",&Start_ST, Start_ST.car_FT.index[1]);
+	//	log("%p| start_ST.index... :%d\n",&Start_ST, Start_ST.car_FT.index[1]);
 
-    	turn * turn_data=new turn(data->C, data->V);
-    	Astar<state>::road result=astar.findpath(turn_data);
-    	printf("%d", result.second);
+	turn * turn_data=new turn(data->C, data->V);
+	Astar<state>::road result=astar.findpath(turn_data);
+	printf("%d", result.second);
+
 
 	log("endProgram");
 	return 0;

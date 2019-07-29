@@ -117,11 +117,14 @@ typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
 			return now;
 		}
         now.first.printstate();
+        printf("point:%d\n", now.second);
 		visit.insert(now.first);
+		now.second = dis.find(now.first)->second;
+		printf("total:%d\n", now.second);
 
 		for(i=0; i<nextsize(now.first); i++){
 			next = nexti(now.first, i);
-			log("add next to queue:\n");
+			printf("add next to queue:\n");
 //			next.first.printstate();
 			auto iter = dis.find(next.first);
 			if(iter==dis.end()){
