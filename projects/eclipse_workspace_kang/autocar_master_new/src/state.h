@@ -112,9 +112,9 @@ struct state{
 			nowT(0), carN(carN), car_FT(carN),\
 			carV(new int[carN]), carFV(new int[carN]), carT(new int[carN]){}
 	~state(){
-		//		delete carV;
-		//		delete carFV;
-		//		delete carT;
+				delete carV;
+				delete carFV;
+				delete carT;
 	}
 
 	static int h(state &now, state &end);
@@ -140,9 +140,19 @@ struct state{
 input* state::data;
 int state::h(state &now, state &end){
 	double distance=0.0;
-	for(int car_n=0;car_n<data->C;car_n++){
-		distance+=(sqrt(pow((data->v_xy[now.carFV[car_n]][0])-(data->v_xy[end.carFV[car_n]][0]), 2)\
-				+pow((data->v_xy[now.carFV[car_n]][1])-(data->v_xy[end.carFV[car_n]][1]), 2)))/(data->c_speed[car_n]);
+//	for(int car_n=0;car_n<data->C;car_n++){
+//		distance+=(sqrt(pow((data->v_xy[now.carFV[car_n]][0])-(data->v_xy[end.carFV[car_n]][0]), 2)\
+//				+pow((data->v_xy[now.carFV[car_n]][1])-(data->v_xy[end.carFV[car_n]][1]), 2)))/(data->c_speed[car_n]);
+//	}
+	for(int i=1; i<=now.car_FT.heapsize; i++){
+		int nc=now.car_FT.data[now.car_FT.index[i]].car_n;
+		distance+=(sqrt(pow((data->v_xy[now.carFV[nc]][0])-(data->v_xy[end.carFV[nc]][0]), 2)\
+				+pow((data->v_xy[now.carFV[nc]][1])-(data->v_xy[end.carFV[nc]][1]), 2)))/(data->c_speed[nc]);
+//		printf("car %d| %d -> %d (%ds)\n",\
+//				car_FT.data[car_FT.index[i]].car_n,\
+//				carV[car_FT.data[car_FT.index[i]].car_n],\
+//				carFV[car_FT.data[car_FT.index[i]].car_n],\
+//				car_FT.data[car_FT.index[i]].car_FT);
 	}
 	int distance2;
 	distance2=(int)(distance*100);
@@ -166,7 +176,7 @@ Astar<state>::road & state::nexti(state &now, int i){
 		carnumber--;
 	}
 
-	state next(carnumber);
+	state next(now.car_FT.maxsize);
 	next.deep_copy(now);
 
 	next.carV[a.car_n]=now.carFV[a.car_n];

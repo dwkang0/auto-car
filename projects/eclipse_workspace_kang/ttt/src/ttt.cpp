@@ -48,6 +48,7 @@ int main() {
 	a.push(2);
 
 //	a.pop();
+
 //	a.pop();
 //	a.pop();
 //	a.pop();
