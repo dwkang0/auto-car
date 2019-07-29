@@ -33,6 +33,7 @@ int main()
 		Start_ST.car_FT.push(state::car_data(0, car_n));
 		End_ST.carFV[car_n]=data->car_road[car_n][1];
 	}
+	log("start.index[1]:%d", Start_ST.car_FT.index[1]);
 //	log("%p,%p,%p,%p",&Start_ST.car_FT.index, &Start_ST, &End_ST.car_FT.index, &End_ST);
 //	log("size:%d",sizeof(state));
 //	log("%p| start_ST.index... :%p",&Start_ST, &Start_ST.car_FT.index);

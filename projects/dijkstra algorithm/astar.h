@@ -102,6 +102,7 @@ typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
 	unordered_set<VT> visit;
 //	priority_queue<road, vector<road>, Astar::roadcmp > q;
 	heap<road, Astar::roadcmp > q(1000000);
+	log("in findpath: index[1]:%d",startV->car_FT.index[1]);
 
 	dis.insert(road(*startV, 0));
 	q.push(road(*startV, 0));
@@ -110,16 +111,18 @@ typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
 	int i;
 	while(q.heapsize){
 		now = q.top(); q.pop();
-		log("inwhile: %p, index[1]%d",&now.first, now.first.car_FT.index[1]);
-        now.first.printstate();
+		log("inwhile: %p, index[1]: %d",&now.first, now.first.car_FT.index[1]);
 		if(visit.find(now.first) != visit.end()) continue;
 		if(now.first == *endV){
 			return now;
 		}
+        now.first.printstate();
 		visit.insert(now.first);
 
 		for(i=0; i<nextsize(now.first); i++){
 			next = nexti(now.first, i);
+			log("add next to queue:\n");
+//			next.first.printstate();
 			auto iter = dis.find(next.first);
 			if(iter==dis.end()){
                 int carnumber;

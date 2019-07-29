@@ -1,4 +1,4 @@
-#ifndef _STATE_H_
+﻿#ifndef _STATE_H_
 #define _STATE_H_
 
 //HEADER START
@@ -41,8 +41,9 @@ struct state{
 		for(int i=0; i<carN; i++){
 			printf("car %d| %d -> %d (%ds)\n",i+1, carV[i], carFV[i], car_FT.data[i+1].car_FT);
 		}
+		printf("Time : %d\n", nowT);
 		printf("n:%d\n",car_FT.index[1]);
-		log("%d %d %d",car_FT.data[car_FT.index[1]].car_FT, car_FT.data[car_FT.index[2]].car_FT, car_FT.data[car_FT.index[3]].car_FT);
+//		log("%d %d %d",car_FT.data[car_FT.index[1]].car_FT, car_FT.data[car_FT.index[2]].car_FT, car_FT.data[car_FT.index[3]].car_FT);
 		printf("============\n\n");
 	}
 
@@ -74,14 +75,23 @@ struct state{
 		delete car_FT.data;
 	}
 	void deep_copy(const state &from){//보통은 destroction, 메모리 할당 필요
-		memcpy(this->car_FT.data, from.car_FT.data, sizeof(car_data)*(from.car_FT.heapsize+1));
-		memcpy(this->car_FT.index, from.car_FT.index, sizeof(int)*(from.car_FT.heapsize+1));
+		memcpy(this->car_FT.data+1, from.car_FT.data+1, sizeof(car_data)*(from.car_FT.heapsize));
+		memcpy(this->car_FT.index+1, from.car_FT.index+1, sizeof(int)*(from.car_FT.heapsize));
+		int h = from.car_FT.qhead, t = from.car_FT.qtail;
+		if(h < t){
+			memcpy(this->car_FT.nextq+h,from.car_FT.nextq+h, sizeof(int)*(t-h));
+		}else{
+			memcpy(this->car_FT.nextq, from.car_FT.nextq, sizeof(int)*(t));
+			memcpy(this->car_FT.nextq+h,from.car_FT.nextq+h, sizeof(int)*(from.car_FT.maxsize+1-h));
+		}
 		this->car_FT.heapsize = from.car_FT.heapsize;
 		this->car_FT.maxsize = from.car_FT.maxsize;
+		this->car_FT.qhead = from.car_FT.qhead;
+		this->car_FT.qtail = from.car_FT.qtail;
 
-		memcpy(this->carV, from.carV, sizeof(int)*carN);
-		memcpy(this->carFV, from.carFV, sizeof(int)*carN);
-		memcpy(this->carT, from.carT, sizeof(int)*carN);
+		memcpy(this->carV, from.carV, sizeof(int)*from.carN);
+		memcpy(this->carFV, from.carFV, sizeof(int)*from.carN);
+		memcpy(this->carT, from.carT, sizeof(int)*from.carN);
 
 		this->carN = from.carN;
 		this->nowT = from.nowT;
@@ -95,9 +105,9 @@ struct state{
 			nowT(0), carN(carN), car_FT(carN),\
 			carV(new int[carN]), carFV(new int[carN]), carT(new int[carN]){}
 	~state(){
-		delete carV;
-		delete carFV;
-		delete carT;
+//		delete carV;
+//		delete carFV;
+//		delete carT;
 	}
 
 	static int h(state &now, state &end);
@@ -106,15 +116,14 @@ struct state{
 
 	state & operator = (const state & b){
 		destruction();
-		nowT=b.nowT;
-		carN=b.carN;
+		///메모리 할당
 		car_FT.data = new car_data[b.carN+1];
 		car_FT.index = new int[b.carN+1];
-		car_FT.heapsize=b.car_FT.heapsize;
-		car_FT.maxsize=b.car_FT.maxsize;
+		car_FT.nextq = new int[b.carN+1];
 		carV =new int[b.carN];
 		carFV =new int[b.carN];
 		carT =new int[b.carN];
+		///메모리 할당 끝
 		deep_copy(b);
 //		memcpy(this, &b, sizeof(state));
 		return *this;
@@ -151,8 +160,16 @@ log("nexti:");
     }
 
     state next(carnumber);
+//    next.deep_copy(now);
     memcpy(next.car_FT.data+1, now.car_FT.data+1, sizeof(car_data)*now.car_FT.heapsize);
     memcpy(next.car_FT.index+1, now.car_FT.index+1, sizeof(int)*now.car_FT.heapsize);
+	int h = now.car_FT.qhead, t = now.car_FT.qtail;
+	if(h < t){
+		memcpy(next.car_FT.nextq+h,now.car_FT.nextq+h, sizeof(int)*(t-h));
+	}else{
+		memcpy(next.car_FT.nextq, now.car_FT.nextq, sizeof(int)*(t));
+		memcpy(next.car_FT.nextq+h,now.car_FT.nextq+h, sizeof(int)*(now.car_FT.maxsize+1-h));
+	}
     next.car_FT.heapsize=now.car_FT.heapsize;
     for(int car_n=0; car_n<data->C; car_n++){
         next.carV[car_n]=now.carV[car_n];
@@ -183,14 +200,15 @@ log("nexti:");
                 }
             }
         }
-        next.car_FT.data[a.car_n+1].car_FT+=flowtime2;
+        next.car_FT.data[now.car_FT.index[1]].car_FT+=flowtime2;
         next.car_FT.relax(1);
     }
-    log("nexi : %d ", flowtime2);
+    int returntime=(next.nowT-now.nowT);
+    log("nexi : %d ", returntime);
     log("%d", next.carN);
     log("%d", next.carV[1]);
     log("%d", next.carV[2]);
-    Astar<state>::road *todis=new Astar<state>::road(next, flowtime2);
+    Astar<state>::road *todis=new Astar<state>::road(next, returntime);
 log("nexti end");
     return *todis;
 }
@@ -198,23 +216,23 @@ namespace std {
 template <>
 struct hash<state> {
 	size_t operator()(const state& s) const {//hash {v, fv, (t-ft.top())}
-		printf("hash:\n");
+//		printf("hash:\n");
 		std::size_t h = 0;
 		unsigned int temp, t2;
-		hashdata(h, s.carV, sizeof(int)*s.carN);	//hash v
+//		hashdata(h, s.carV, sizeof(int)*s.carN);	//hash v
 		hashdata(h, s.carFV, sizeof(int)*s.carN);	//hash fv
-		for(int i=0; i<s.carN; i++){				//hash (t-ft.top()
-			temp = s.carT[i];
-			int t2=s.car_FT.top().car_FT;
-			temp-=t2;
-			//            s.car_FT.top();
-			hashbyte(h, temp&(0xff));
-			hashbyte(h, (temp&(0xff00))>>8);
-			hashbyte(h, (temp&(0xff0000))>>16);
-			hashbyte(h, (temp&(0xff000000))>24);
-
-		}
-		printf("hash end\n\n");
+//		for(int i=0; i<s.carN; i++){				//hash (t-ft.top()
+//			temp = s.carT[i];
+//			int t2=s.car_FT.top().car_FT;
+//			temp-=t2;
+//			//            s.car_FT.top();
+//			hashbyte(h, temp&(0xff));
+//			hashbyte(h, (temp&(0xff00))>>8);
+//			hashbyte(h, (temp&(0xff0000))>>16);
+//			hashbyte(h, (temp&(0xff000000))>24);
+//
+//		}
+//		printf("hash end\n\n");
 		return h;
 	}
 };

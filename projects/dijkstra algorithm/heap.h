@@ -32,8 +32,10 @@ public:
 
 	T * data;
 	int * index;//heap index to data index
+	int * nextq, qhead, qtail;
 	int heapsize;
 	int maxsize;
+
 
 	inline int parent(const int index) const{
 		return index/2;
@@ -46,13 +48,20 @@ public:
 	}
 
 //public:
-	heap(int maxsize):maxsize(maxsize), heapsize(0), cp(){
-		data = new T[maxsize+1];
-		index = new int[maxsize+1];
-	}
+	heap(int maxsize):maxsize(maxsize), heapsize(0), cp(),\
+			data(new T[maxsize+1]), index(new int[maxsize+1]),\
+			nextq(new int[maxsize+1]), qhead(0), qtail(0){}
 	~heap(){
 //		delete data;
 //		delete index;
+//		delete nextq;
+	}
+	inline void nqpush(int i){
+		nextq[(qtail++)%(maxsize+1)]=i;
+	}
+	inline int nqpop(){
+//		printf("h:%d, t:%d\n",qhead, qtail);
+		return qhead<qtail ? nextq[(qhead++)%(maxsize+1)] : -1;
 	}
 	inline void relax(int i){
 		log("relax:");
@@ -60,6 +69,7 @@ public:
 		//up
 		while(i>1 && cp(data[index[parent(i)]], data[index[i]])){
 			heapfunc::swap(index[parent(i)], index[i]);
+			i=parent(i);
 		}
 		//down
 		int lrmax;
@@ -87,19 +97,30 @@ public:
 	inline int push(const T &x){
 	    log("push:");
 		heapsize++;
-		int now;
-		now = heapsize;
-		data[now] = x;
-		index[now] = heapsize;
+		int now, dindex;
+		now=heapsize;
+		dindex = nqpop();
+//		printf("hs:%d\n",heapsize);
+		dindex = dindex==-1 ? heapsize : dindex;
+//		printf("now:%d, dindex:%d\n",now, dindex);
+		data[dindex] = x;
+		index[now] = dindex;
+//		log("now:%d, index[now]:%d, data[now]:%d",now, index[now],data[index[now]]);
+//		log("%d < %d?",data[index[parent(now)]], data[index[now]]);
 		while(now>1 && cp(data[index[parent(now)]] , data[index[now]])){
+//			log("index[now]:%d",index[now]);
 			heapfunc::swap(index[parent(now)], index[now]);
+			now = parent(now);
 		}
 		log("push end\n");
 		return heapsize;
 	}
 	inline void pop(){
 		log("pop:");
+		nqpush(index[1]);
+//		printf("-==%d\n",index[1]);
 		index[1]=index[heapsize--];
+//		data[index[1]] = data[index[heapsize--]];
 		int now=1;
 		int lrmax;
 		while(rightc(now) <= heapsize){
