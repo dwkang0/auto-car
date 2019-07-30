@@ -50,26 +50,25 @@ int main(int argc, char* argv[])
 
     turn * turn_data=new turn(data->C, data->V);
     Astar<state>::road result=astar.findpath(turn_data);
-    int linkingdata[data->C][data->V];
-    int linking[data->C];
-    /*for(int c=0;c<data->C;c++){
-        linkingdata[c][0]=data->car_road[c][1];
+    int linkingdata[data->V];
+    int linking;
+    for(int c=0;c<data->C;c++){
+        linkingdata[0]=data->car_road[c][1];
         for(int i=1;i<data->V;i++){
-            linkingdata[c][i]=turn_data->link(c, linkingdata[c][i-1]);
-            if(linkingdata[c][i]==data->car_road[c][0]){
-                linking[c]=i+1;
+            linkingdata[i]=turn_data->link(c, linkingdata[i-1]);
+            if(linkingdata[i]==data->car_road[c][0]){
+                linking=i+1;
                 break;
             }
         }
-        printf("차 %d 이동경로 :\n");
-        for(int i=0;i<linking[c]+1;i++){
-            printf("%d ", linkingdata[c][linking[c]-i-1]);
-        }
-        printf("\n이동 시간 : %d", result.first.carT[c]);
-    }*/
+        printf("차 %d 이동경로 : \n", c);
+//        for(int i=0;i<linking+1;i++){
+//            printf("%d ", linkingdata[linking-i-1]);
+//        }
+        printf("이동 시간 : %d\n\n", result.first.carT[c]);
+    }
     printf("%d", result.second);
 
 	log("endProgram");
 	return 0;
 }
-
