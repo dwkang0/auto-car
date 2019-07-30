@@ -39,12 +39,7 @@ struct state{
     void printstate(){
 		printf("====state====\n");
 		for(int i=0; i<carN; i++){
-            if(car_FT.data[i+1].car_FT==INF){
-                printf("car %d| %d -> %d (%ds)\n",i+1, carV[i], carFV[i], carT[i]);
-            }
-            else{
-                printf("car %d| %d -> %d (%ds -> %ds)\n",i+1, carV[i], carFV[i], carT[i], car_FT.data[i+1].car_FT);
-            }
+			printf("car %d| %d -> %d (%ds -> %ds)\n",i+1, carV[i], carFV[i], carT[i], car_FT.data[i+1].car_FT);
 		}
 		printf("Time : %d\n", nowT);
 		printf("n:%d\n",car_FT.index[1]);

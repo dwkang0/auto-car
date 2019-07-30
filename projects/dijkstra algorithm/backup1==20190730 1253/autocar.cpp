@@ -50,10 +50,26 @@ int main(int argc, char* argv[])
 	Astar<state> astar = Astar<state>(Start_ST, End_ST, state::nexti, state::nextsize, state::h, data);
 //	log("%p| start_ST.index... :%d\n",&Start_ST, Start_ST.car_FT.index[1]);
 
-    vector<state> path=astar.findpath();
-//    printf("차 %d 이동경로 : \n", c);
-//    printf("이동 시간 : %d\n\n", result.first.carT[c]);
-//    printf("%d", result.second);
+    turn * turn_data=new turn(data->C, data->V);
+    Astar<state>::road result=astar.findpath(turn_data);
+    int linkingdata[data->V];
+    int linking;
+    for(int c=0;c<data->C;c++){
+        linkingdata[0]=data->car_road[c][1];
+        for(int i=1;i<data->V;i++){
+            linkingdata[i]=turn_data->link(c, linkingdata[i-1]);
+            if(linkingdata[i]==data->car_road[c][0]){
+                linking=i+1;
+                break;
+            }
+        }
+        printf("차 %d 이동경로 : \n", c);
+//        for(int i=0;i<linking+1;i++){
+//            printf("%d ", linkingdata[linking-i-1]);
+//        }
+        printf("이동 시간 : %d\n\n", result.first.carT[c]);
+    }
+    printf("%d", result.second);
 
 	log("endProgram");
 	return 0;
