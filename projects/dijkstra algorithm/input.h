@@ -41,12 +41,12 @@ struct input{
     }
 };
 
-input * file_output(){
+input * file_output(char* pilename){
 	FILE *fp;
-	fp=fopen("road.txt", "rt");
+	fp=fopen(pilename, "rt");
 	if (fp!=NULL) {}
 	else {
-		puts("파일을 찾을 수 없습니다.\n");
+		puts("파일을 찾을 수 없습니다.");
 		return 0;
 	}
 

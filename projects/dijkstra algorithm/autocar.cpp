@@ -11,13 +11,15 @@ using namespace std;
 #include "state.h"
 #include "astar.h"
 
-input * file_output();
+input * file_output(char*);
 //void dijkstra_first(input *);
-int main()
+int main(int argc, char* argv[])
 {
 	log("startProgram");
-
-	input * data=file_output();
+    log
+    ("%d   ", argc);
+    log("%s", argv[1]);
+	input * data=file_output(argv[1]);
 	log("inputEND\n");
 	//    printf("dd");
 	state Start_ST(data->C), End_ST(data->C);
@@ -50,7 +52,7 @@ int main()
     Astar<state>::road result=astar.findpath(turn_data);
     int linkingdata[data->C][data->V];
     int linking[data->C];
-    for(int c=0;c<data->C;c++){
+    /*for(int c=0;c<data->C;c++){
         linkingdata[c][0]=data->car_road[c][1];
         for(int i=1;i<data->V;i++){
             linkingdata[c][i]=turn_data->link(c, linkingdata[c][i-1]);
@@ -59,12 +61,12 @@ int main()
                 break;
             }
         }
-        //printf("차 %d 이동경로 :\n");
+        printf("차 %d 이동경로 :\n");
         for(int i=0;i<linking[c]+1;i++){
-            //printf("%d ", linkingdata[c][linking[c]-i-1]);
+            printf("%d ", linkingdata[c][linking[c]-i-1]);
         }
-        //printf("\n이동 시간 : %d", result.first.carT[c]);
-    }
+        printf("\n이동 시간 : %d", result.first.carT[c]);
+    }*/
     printf("%d", result.second);
 
 	log("endProgram");
