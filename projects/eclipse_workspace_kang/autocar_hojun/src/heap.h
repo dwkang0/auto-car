@@ -52,17 +52,10 @@ public:
 			data(new T[maxsize+1]), index(new int[maxsize+1]),\
 			nextq(new int[maxsize+1]), qhead(0), qtail(0){}
 	~heap(){
-//		printf("delete: %p, %p, %p\n",data, index, nextq);
-//		delete[] data;
-//		delete[] index;
-		delete[] nextq;
+//		delete data;
+		delete index;
+		delete nextq;
 	}
-//	inline void rsize(int maxsize){
-//		delete[] data;
-//		delete[] index;
-//		delete[] nextq;
-//		data = new T[maxsize+1];
-//	}
 	inline void nqpush(int i){
 		nextq[(qtail++)%(maxsize+1)]=i;
 	}
@@ -112,13 +105,13 @@ public:
 //		printf("now:%d, dindex:%d\n",now, dindex);
 		data[dindex] = x;
 		index[now] = dindex;
-//		log("now:%d, index[now]:%d, data[now]:%d",now, index[now],data[index[now]]);
+		log("now:%d, index[now]:%d, data[now]:%d",now, index[now],data[index[now]]);
 //		log("%d < %d?",data[index[parent(now)]], data[index[now]]);
 		while(now>1 && cp(data[index[parent(now)]] , data[index[now]])){
 			log("index[now]:%d",index[now]);
 			heapfunc::swap(index[parent(now)], index[now]);
 			now = parent(now);
-//			log("%d < %d?",data[index[parent(now)]], data[index[now]]);
+			log("%d < %d?",data[index[parent(now)]], data[index[now]]);
 		}
 		log("push end\n");
 		return heapsize;

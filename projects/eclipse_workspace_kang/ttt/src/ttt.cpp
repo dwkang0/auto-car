@@ -42,20 +42,16 @@ int main() {
 	a.push(9);
 	a.push(15);
 	a.push(15);
+	a.pop();
+	a.pop();
 	a.push(24);
 	a.push(1);
+	a.pop();
 	a.push(30);
 	a.push(2);
+	a.data[a.index[1]]=7;
+	a.relax(1);
 
-//	a.pop();
-
-//	a.pop();
-//	a.pop();
-//	a.pop();
-//	a.pop();
-//	a.pop();
-//	a.pop();
-//	a.pop();
 	while(a.heapsize!=0){
 		printf("%d\n", a.top()); a.pop();
 	}

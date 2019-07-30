@@ -73,7 +73,7 @@ public:
 		free(endV);
 	}
 	//typename unordered_map<VT,int>::iterator;
-	vector<VT> findpath(turn *);
+	road findpath(turn *);
 	struct roadcmp{
 		bool operator()(const road & a, const road & b) const
 		{
@@ -95,13 +95,13 @@ public:
 
 //FUNCTION START
 template <typename VT>
-vector<VT> Astar<VT>::findpath(turn * turn_data){
+typename Astar<VT>::road Astar<VT>::findpath(turn * turn_data){
 	log("in findPath:");
 	unordered_map<VT, int> dis;
 	unordered_set<VT> visit;
 //	typename unordered_map<VT,int>::iterator a;
 	unordered_map<VT, VT> path_before;//<now, before>
-	heap<road, Astar::roadcmp > q(5000);
+	heap<road, Astar::roadcmp > q(1000000);
 	log("in findpath: index[1]:%d",startV->car_FT.index[1]);
 
 	dis.insert(road(*startV, 0));
@@ -114,22 +114,19 @@ vector<VT> Astar<VT>::findpath(turn * turn_data){
 		now = q.top(); q.pop();
 		log("inwhile: %p, index[1]: %d",&now.first, now.first.car_FT.index[1]);
 		if(visit.find(now.first) != visit.end()) continue;
-		if(now.first == *endV){
-//			VT *nowVt = endV;
-			VT *nowVt = new VT(dis.find(*endV)->first);
-			vector<VT *> _path;
-			printf("resault:\n");
-			while(!(*nowVt == *startV)){
-				nowVt->printstate();
-				nowVt= &(path_before.find(*nowVt)->second);
-				_path.push_back(nowVt);
+		if(nextsize(now.first)==0){
+//		if(now.first == *endV){////////////todo
+            now.second=now.first.nowT;
+			VT nowVt = now.first;
+			printf("result:\n");
+			while(!(nowVt == *startV)){
+				nowVt.printstate();
+				nowVt = path_before.find(nowVt)->second;
 			}
-			vector<VT> path;
-			for(int i=_path.size()-1; i>=0; i--){
-				path.push_back(*_path[i]);
-			}
-			return path;
+
+			return now;
 		}
+		printf("\n\n\n\n");
         now.first.printstate();
         printf("point:%d\n", now.second);
 		visit.insert(now.first);
@@ -139,7 +136,7 @@ vector<VT> Astar<VT>::findpath(turn * turn_data){
 		for(i=0; i<nextsize(now.first); i++){
 			next = nexti(now.first, i);
 			printf("add next to queue:\n");
-			next.first.printstate();
+//			next.first.printstate();
 			auto iter = dis.find(next.first);
 			if(iter==dis.end()){
                 int carnumber;
@@ -168,8 +165,7 @@ vector<VT> Astar<VT>::findpath(turn * turn_data){
 		}
 	}
 
-
-	return vector<VT>();
+	return road(*startV, -1);
 }
 //FUNCTION END
 #endif
