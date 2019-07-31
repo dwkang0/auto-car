@@ -101,7 +101,7 @@ vector<VT> Astar<VT>::findpath(turn * turn_data){
 	unordered_set<VT> visit;
 //	typename unordered_map<VT,int>::iterator a;
 	unordered_map<VT, VT> path_before;//<now, before>
-	heap<road, Astar::roadcmp > q(5000);
+	heap<road, Astar::roadcmp > q(500000);
 	log("in findpath: index[1]:%d",startV->car_FT.index[1]);
 
 	dis.insert(road(*startV, 0));
@@ -110,6 +110,7 @@ vector<VT> Astar<VT>::findpath(turn * turn_data){
 	road now, next;
 
 	int i;
+	int count=0;
 	while(q.heapsize){
 		now = q.top(); q.pop();
 		log("inwhile: %p, index[1]: %d",&now.first, now.first.car_FT.index[1]);
@@ -135,6 +136,10 @@ vector<VT> Astar<VT>::findpath(turn * turn_data){
 		visit.insert(now.first);
 		now.second = dis.find(now.first)->second;
 		printf("total:%d\n", now.second);
+		printf("count:%d\n\n",count);
+		if(count++==339){
+			printf("here=========\n");
+		}
 
 		for(i=0; i<nextsize(now.first); i++){
 			next = nexti(now.first, i);

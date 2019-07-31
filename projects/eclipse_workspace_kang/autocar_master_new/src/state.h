@@ -47,10 +47,18 @@ struct state{
 					carV[car_FT.data[car_FT.index[i]].car_n],\
 					carFV[car_FT.data[car_FT.index[i]].car_n],\
 					car_FT.data[car_FT.index[i]].car_FT);
+
+//			printf("%d %d %d")
 		}
+		if(car_FT.heapsize==0)
+//			printf("end!!!!!!!!");
 		printf("Time : %d\n", nowT);
 //		printf("n:%d\n",car_FT.index[1]);
-		//		log("%d %d %d",car_FT.data[car_FT.index[1]].car_FT, car_FT.data[car_FT.index[2]].car_FT, car_FT.data[car_FT.index[3]].car_FT);
+		log("%d %d %d", car_FT.data[car_FT.index[1]].car_n\
+				, car_FT.data[car_FT.index[2]].car_n,\
+				car_FT.data[car_FT.index[3]].car_n);
+		log("%d", carV[1]);
+		log("%d %d %d",car_FT.data[car_FT.index[1]].car_FT, car_FT.data[car_FT.index[2]].car_FT, car_FT.data[car_FT.index[3]].car_FT);
 		printf("============\n\n");
 	}
 
@@ -97,9 +105,9 @@ struct state{
 		this->car_FT.qhead = from.car_FT.qhead;
 		this->car_FT.qtail = from.car_FT.qtail;
 
-		memcpy(this->carV, from.carV, sizeof(int)*from.carN);
-		memcpy(this->carFV, from.carFV, sizeof(int)*from.carN);
-		memcpy(this->carT, from.carT, sizeof(int)*from.carN);
+		memcpy(this->carV, from.carV, sizeof(int)*from.car_FT.maxsize);
+		memcpy(this->carFV, from.carFV, sizeof(int)*from.car_FT.maxsize);
+		memcpy(this->carT, from.carT, sizeof(int)*from.car_FT.maxsize);
 
 		this->carN = from.carN;
 		this->nowT = from.nowT;
@@ -238,19 +246,19 @@ struct hash<state> {
 		//		printf("hash:\n");
 		std::size_t h = 0;
 		unsigned int temp, t2;
-		//		hashdata(h, s.carV, sizeof(int)*s.carN);	//hash v
-		hashdata(h, s.carFV, sizeof(int)*s.carN);	//hash fv
-		//		for(int i=0; i<s.carN; i++){				//hash (t-ft.top()
-		//			temp = s.carT[i];
-		//			int t2=s.car_FT.top().car_FT;
-		//			temp-=t2;
-		//			//            s.car_FT.top();
-		//			hashbyte(h, temp&(0xff));
-		//			hashbyte(h, (temp&(0xff00))>>8);
-		//			hashbyte(h, (temp&(0xff0000))>>16);
-		//			hashbyte(h, (temp&(0xff000000))>24);
-		//
-		//		}
+		hashdata(h, s.carV, sizeof(int)*s.car_FT.maxsize);	//hash v
+		hashdata(h, s.carFV, sizeof(int)*s.car_FT.maxsize);	//hash fv
+//				for(int i=0; i<s.carN; i++){				//hash (t-ft.top()
+//					temp = s.carT[i];
+//					int t2=s.car_FT.top().car_FT;
+//					temp-=t2;
+//					//            s.car_FT.top();
+//					hashbyte(h, temp&(0xff));
+//					hashbyte(h, (temp&(0xff00))>>8);
+//					hashbyte(h, (temp&(0xff0000))>>16);
+//					hashbyte(h, (temp&(0xff000000))>24);
+//
+//				}
 		//		printf("hash end\n\n");
 		return h;
 	}
@@ -258,8 +266,13 @@ struct hash<state> {
 }  // namespace std
 
 bool state::operator == (const state &b) const{
-	hash<state> h;
-	return h(*this) == h(b);
+//	hash<state> h;
+//	return h(*this) == h(b);
+	for(int i=0; i<car_FT.maxsize; i++){
+		if(carFV[i] != b.carFV[i]) return false;
+		if(carV[i] != b.carV[i]) return false;
+	}
+	return true;
 }
 
 //state::data=   ;
