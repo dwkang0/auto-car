@@ -41,6 +41,8 @@ struct input{
     }
 };
 
+input * inputMapFromJson(char *filename);
+
 input * file_output(char* pilename){
 	FILE *fp;
 	fp=fopen(pilename, "rt");
