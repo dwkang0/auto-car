@@ -47,9 +47,33 @@ int main(){
 	Astar<state> astar = Astar<state>(Start_ST, End_ST, state::nexti, state::nextsize, state::h, data);
 	//	log("%p| start_ST.index... :%d\n",&Start_ST, Start_ST.car_FT.index[1]);
 
-	turn * turn_data=new turn(data->C, data->V);
+//	turn * turn_data=new turn(data->C, data->V);
 //	Astar<state>::road result=astar.findpath(turn_data);
-	vector<state> path=astar.findpath(turn_data);
+	vector<state> path=astar.findpath();
+	vector<int> pathforcar[data->C];
+
+	int moveCar;
+	printf("\n###############################\ncar move tracker\n");
+	for(int i=0; i<path.size()-1; i++){
+		moveCar = path[i].car_FT.data[path[i].car_FT.index[1]].car_n;
+		pathforcar[moveCar].push_back( path[i+1].carFV[moveCar] );
+		printf("car %d: ",moveCar);
+		if(pathforcar[moveCar].size() == 1){
+			printf("%d",path[0].carV[moveCar]);
+		}else{
+			printf("%d",pathforcar[moveCar][pathforcar[moveCar].size()-2]);
+		}
+		printf(" -> %d\n",pathforcar[moveCar][pathforcar[moveCar].size()-1]);
+	}
+	printf("\n\npaths for all cars:\n");
+	for(int i=0; i<data->C; i++){
+		printf("car %d | %d ",i, path[0].carV[i]);
+		for(int j=0; j<pathforcar[i].size()-1; j++){
+			printf("-> %d", pathforcar[i][j]);
+		}
+		printf("\n");
+	}
+
 //	printf("%d", result.second);
 
 
