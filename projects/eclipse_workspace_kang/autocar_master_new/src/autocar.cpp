@@ -14,7 +14,7 @@ using namespace std;
 int main(){
 	log("startProgram");
 
-	input * data=file_output("road.txt");
+	input * data=file_output("road_40.txt");
 	log("inputEND\n");
 	//    printf("dd");
 	state Start_ST(data->C), End_ST(data->C);
@@ -71,6 +71,8 @@ int main(){
 		}
 		printf("\n");
 	}
+
+	path.back().printstate();
 
 //	printf("%d", result.second);
 
