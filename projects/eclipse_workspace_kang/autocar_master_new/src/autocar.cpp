@@ -11,12 +11,10 @@ using namespace std;
 #include "state.h"
 #include "astar.h"
 
-input * file_output();
-//void dijkstra_first(input *);
 int main(){
 	log("startProgram");
 
-	input * data=file_output("road_40.txt");
+	input * data=file_output("road.txt");
 	log("inputEND\n");
 	//    printf("dd");
 	state Start_ST(data->C), End_ST(data->C);
